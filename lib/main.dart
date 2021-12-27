@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       title: 'SwiftVote',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'OpenSans',
+        fontFamily: 'SansSerifBldFLF',
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the

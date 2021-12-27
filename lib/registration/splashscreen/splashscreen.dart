@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:swiftvote/registration/admin/adminreg.dart';
+import 'package:swiftvote/registration/voter/voterregistration.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -79,7 +81,9 @@ class _SplashScreenState extends State<SplashScreen>
             padding: const EdgeInsets.all(32.0),
             child: Text(
               msg[curState - 1],
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: 18,
+              ),
             ),
           ),
           Expanded(
@@ -105,7 +109,8 @@ class _SplashScreenState extends State<SplashScreen>
                             },
                             child: Text(
                               "Skip",
-                              style: TextStyle(color: Colors.black),
+                              style: TextStyle(
+                                  color: Colors.black, fontFamily: 'NotoSans'),
                             ),
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
@@ -199,12 +204,28 @@ class _LastSplashScreenState extends State<LastSplashScreen> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) =>
+                                    const VoterRegistrationPage(),
+                              ),
+                            );
+                          },
                           child: Text("Voter", style: SwiftVote.defTextStyle()),
                           style: SwiftVote.defButtonStyle(),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) =>
+                                    const AdminRegPage(),
+                              ),
+                            );
+                          },
                           child: Text(
                             "Admin",
                             style: SwiftVote.defTextStyle(

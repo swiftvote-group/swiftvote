@@ -73,10 +73,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: OpenSans
+    - family: SansSerifBldFLF
       fonts:
-        - asset: assets/fonts/OpenSans-Regular.ttf
-
+        - asset: assets/fonts/SansSerifBldFLF.otf
+    - family: NotoSans
+      fonts:
+        - asset: assets/fonts/NotoSans-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
