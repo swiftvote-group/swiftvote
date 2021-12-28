@@ -29,12 +29,12 @@ class AdminLinkSentPage extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              Text.rich(TextSpan(
+              const Text.rich(TextSpan(
                   text:
                       "Other admins will join you once they follow link and process.",
                   style: TextStyle(
                     fontFamily: 'NotoSans',
-                    fontSize: 10,
+                    fontSize: 11,
                     color: Colors.white,
                   ),
                   children: [

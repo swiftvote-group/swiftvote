@@ -13,19 +13,27 @@ class _VoterNextScreenState extends State<VoterNextScreen> {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    return Wrap(
-      spacing: 8,
-      runSpacing: 16,
-      children: [
-        Voter.defTextFormField("School Email Adress", w, widget.controllers[0]),
-        Voter.defTextFormField("Phone Number", w, widget.controllers[1]),
-        SizedBox(
-            width: w,
-            child: const Text(
-              "A code will be sent to this email address and phone number.",
-              style: TextStyle(fontSize: 10, fontFamily: 'NotoSans'),
-            ))
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 64),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Voter.defTextFormField(
+              "School Email Address", w, widget.controllers[0]),
+          const SizedBox(
+            height: 32,
+          ),
+          Voter.defTextFormField("Phone Number", w, widget.controllers[1]),
+          const SizedBox(
+            height: 16,
+          ),
+          const Text(
+            "A code will be sent to this email address and phone number.",
+            style: TextStyle(fontSize: 10, fontFamily: 'NotoSans'),
+          )
+        ],
+      ),
     );
   }
 }

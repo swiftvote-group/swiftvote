@@ -25,8 +25,8 @@ class _VoterRegistrationPageState extends State<VoterRegistrationPage> {
     screens = [
       VoterRegScreen(controllers.sublist(0, 6)),
       VoterNextScreen(controllers.sublist(6, 8)),
-      VoterVerifScreen(),
-      VoterUploadScreen(),
+      VoterVerifScreen(controllers.sublist(8)),
+      const VoterUploadScreen(),
     ];
     super.initState();
   }
@@ -38,7 +38,7 @@ class _VoterRegistrationPageState extends State<VoterRegistrationPage> {
       appBar: SwiftVote.defAppBar("Voter"),
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height - 56,
+          height: MediaQuery.of(context).size.height - 100,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -63,7 +63,7 @@ class _VoterRegistrationPageState extends State<VoterRegistrationPage> {
                     },
                     child: Text(
                       btnText[_curScreen],
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(

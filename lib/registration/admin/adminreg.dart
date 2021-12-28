@@ -23,26 +23,44 @@ class _AdminRegPageState extends State<AdminRegPage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                const SizedBox(
+                  height: 4,
+                ),
                 SvgPicture.asset("assets/images/adreg.svg",
                     height: MediaQuery.of(context).size.height / 3),
+                const SizedBox(
+                  height: 8,
+                ),
                 signinField(Icons.contact_mail_rounded, "Enter Admin ID", w),
+                const SizedBox(
+                  height: 8,
+                ),
                 signinField(Icons.password_rounded, "Password", w),
+                const SizedBox(
+                  height: 8,
+                ),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
                     onTap: () {},
-                    child: Text(
-                      "Forgotten Password?",
-                      style: TextStyle(
-                          color: SwiftVote.primaryColor,
-                          fontFamily: 'NotoSans'),
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 16),
+                      child: Text(
+                        "Forgotten Password?",
+                        style: TextStyle(
+                            color: SwiftVote.primaryColor,
+                            fontFamily: 'NotoSans'),
+                      ),
                     ),
                   ),
                 ),
+                const Spacer(),
                 SwiftVote.defButton(context, null, "Enter"),
-                Text.rich(TextSpan(children: [
+                const SizedBox(
+                  height: 16,
+                ),
+                const Text.rich(TextSpan(children: [
                   WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
                       child: Icon(
@@ -62,6 +80,9 @@ class _AdminRegPageState extends State<AdminRegPage> {
                         color: Color(0xFF407BFF),
                       )),
                 ])),
+                const SizedBox(
+                  height: 16,
+                ),
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacement(
@@ -72,24 +93,26 @@ class _AdminRegPageState extends State<AdminRegPage> {
                       ),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     "Sign Up",
                     style:
                         TextStyle(color: SwiftVote.primaryColor, fontSize: 16),
                   ),
                   style: ButtonStyle(
-                    minimumSize:
-                        MaterialStateProperty.all<Size?>(Size.fromHeight(24)),
+                    minimumSize: MaterialStateProperty.all<Size?>(
+                        const Size.fromHeight(24)),
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.white),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                            side: BorderSide(color: SwiftVote.primaryColor),
+                            side:
+                                const BorderSide(color: SwiftVote.primaryColor),
                             borderRadius: BorderRadius.circular(16))),
                     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                         const EdgeInsets.symmetric(vertical: 16)),
                   ),
                 ),
+                const Spacer(),
               ],
             ),
           ),

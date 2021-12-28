@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swiftvote/registration/abouttologout.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class PositionPage extends StatelessWidget {
@@ -9,18 +10,20 @@ class PositionPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: SwiftVote.primaryColor,
       appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: Icon(Icons.arrow_back_rounded)),
-          title: Text("SUG", style: TextStyle(fontSize: 20)),
-          actions: []),
+        backgroundColor: SwiftVote.primaryColor,
+        elevation: 0,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.arrow_back_rounded)),
+        title: const Text("SUG", style: TextStyle(fontSize: 20)),
+      ),
       body: Padding(
         padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
         child: SingleChildScrollView(
           child: Column(
-            children: List.generate(7, (index) => CandidateCard()),
+            children: List.generate(7, (index) => const CandidateCard()),
           ),
         ),
       ),
@@ -35,8 +38,8 @@ class CandidateCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height / 3.2,
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -46,60 +49,77 @@ class CandidateCard extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: MediaQuery.of(context).size.height / 12,
-            child: FlutterLogo(
+            child: const FlutterLogo(
               size: 100,
             ),
           ),
-          Text(
+          const Text(
             "Jerry Dike",
             style: TextStyle(color: Colors.black, fontSize: 16),
           ),
-          Text(
+          const Text(
             "SUG President",
             style: TextStyle(
                 color: Colors.black, fontSize: 14, fontFamily: 'NotoSans'),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               TextButton(
-                onPressed: () {},
-                child: Text(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) =>
+                          const AboutToLogOutPage(),
+                    ),
+                  );
+                },
+                child: const Text(
                   "View Profile",
                   style: TextStyle(
                       color: SwiftVote.primaryColor,
                       fontSize: 14,
+                      fontWeight: FontWeight.bold,
                       fontFamily: 'NotoSans'),
                 ),
                 style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.all<Size?>(
+                      Size.copy(const Size(150, 24))),
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.white),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                          side: BorderSide(color: SwiftVote.primaryColor),
+                          side: const BorderSide(color: SwiftVote.primaryColor),
                           borderRadius: BorderRadius.circular(16))),
                   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 48)),
+                      const EdgeInsets.symmetric(
+                    vertical: 16,
+                  )),
                 ),
               ),
               TextButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   "Vote",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 14,
+                      fontWeight: FontWeight.bold,
                       fontFamily: 'NotoSans'),
                 ),
                 style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.all<Size?>(
+                      Size.copy(const Size(150, 24))),
                   backgroundColor:
                       MaterialStateProperty.all<Color>(SwiftVote.primaryColor),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                          side: BorderSide(color: SwiftVote.primaryColor),
+                          side: const BorderSide(color: SwiftVote.primaryColor),
                           borderRadius: BorderRadius.circular(16))),
                   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 48)),
+                      const EdgeInsets.symmetric(
+                    vertical: 16,
+                  )),
                 ),
               ),
             ],

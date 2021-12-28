@@ -107,10 +107,11 @@ class _SplashScreenState extends State<SplashScreen>
                                 _controller.value = 6.01;
                               });
                             },
-                            child: Text(
+                            child: const Text(
                               "Skip",
                               style: TextStyle(
-                                  color: Colors.black, fontFamily: 'NotoSans'),
+                                  color: SwiftVote.textColor,
+                                  fontFamily: 'NotoSans'),
                             ),
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
@@ -235,9 +236,9 @@ class _LastSplashScreenState extends State<LastSplashScreen> {
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     SvgPicture.asset("assets/images/fulllogow.svg"),
-                    SizedBox(
+                    const SizedBox(
                       height: 32,
                     ),
                   ],

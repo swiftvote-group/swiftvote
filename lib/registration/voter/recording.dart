@@ -10,6 +10,8 @@ class RecordingPage extends StatefulWidget {
 
 class _RecordingPageState extends State<RecordingPage>
     with TickerProviderStateMixin {
+  Duration duration = const Duration(seconds: 1);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,8 +27,7 @@ class _RecordingPageState extends State<RecordingPage>
                   begin: Offset.zero,
                   end: const Offset(0.0, 0.2),
                 ).animate(CurvedAnimation(
-                  parent: AnimationController(
-                      vsync: this, duration: Duration(seconds: 1))
+                  parent: AnimationController(vsync: this, duration: duration)
                     ..repeat(reverse: true),
                   curve: Curves.linear,
                 )),
@@ -37,8 +38,7 @@ class _RecordingPageState extends State<RecordingPage>
                   begin: const Offset(0.0, 0.1),
                   end: const Offset(0.0, 0.1),
                 ).animate(CurvedAnimation(
-                  parent: AnimationController(
-                      vsync: this, duration: Duration(milliseconds: 1000))
+                  parent: AnimationController(vsync: this, duration: duration)
                     ..repeat(reverse: true),
                   curve: Curves.linear,
                 )),
@@ -49,18 +49,17 @@ class _RecordingPageState extends State<RecordingPage>
                   begin: const Offset(0.0, 0.2),
                   end: Offset.zero,
                 ).animate(CurvedAnimation(
-                  parent: AnimationController(
-                      vsync: this, duration: Duration(milliseconds: 1000))
+                  parent: AnimationController(vsync: this, duration: duration)
                     ..repeat(reverse: true),
                   curve: Curves.linear,
                 )),
                 child: eachBar(const Color(0xFFBA68C8)),
               ),
             ]),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
-            Text("Recording",
+            const Text("Recording",
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.white,
@@ -74,7 +73,7 @@ class _RecordingPageState extends State<RecordingPage>
 
 Widget eachBar(Color color) {
   return Container(
-    margin: EdgeInsets.all(2),
+    margin: const EdgeInsets.all(2),
     height: 48,
     width: 8,
     decoration:
