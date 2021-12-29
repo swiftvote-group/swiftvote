@@ -33,6 +33,7 @@ class Voter {
             fontSize: 20, fontFamily: 'NotoSans', color: SwiftVote.textColor),
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
+        textAlignVertical: TextAlignVertical.center,
         onChanged: (value) {
           if (value.length == 1) {
             FocusScope.of(context).nextFocus();

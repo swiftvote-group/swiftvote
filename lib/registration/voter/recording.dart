@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swiftvote/home/mainpage.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class RecordingPage extends StatefulWidget {
@@ -11,6 +12,18 @@ class RecordingPage extends StatefulWidget {
 class _RecordingPageState extends State<RecordingPage>
     with TickerProviderStateMixin {
   Duration duration = const Duration(seconds: 1);
+
+  @override
+  void initState() {
+    Future.delayed(const Duration(seconds: 10), () {
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => const MainPage(),
+        ),
+      );
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swiftvote/home/voting/voting.dart';
 import 'package:swiftvote/registration/abouttologout.dart';
 import 'package:swiftvote/swiftvote.dart';
 
@@ -12,6 +13,7 @@ class PositionPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: SwiftVote.primaryColor,
         elevation: 0,
+        actions: const [LiveWidget()],
         leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -98,7 +100,13 @@ class CandidateCard extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const VotingPage(),
+                    ),
+                  );
+                },
                 child: const Text(
                   "Vote",
                   style: TextStyle(
@@ -126,6 +134,38 @@ class CandidateCard extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class LiveWidget extends StatefulWidget {
+  const LiveWidget({Key? key}) : super(key: key);
+
+  @override
+  _LiveWidgetState createState() => _LiveWidgetState();
+}
+
+class _LiveWidgetState extends State<LiveWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.red,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: const Text.rich(TextSpan(children: [
+        WidgetSpan(
+          alignment: PlaceholderAlignment.middle,
+          child: Icon(
+            Icons.radio_button_on_rounded,
+            color: Colors.white,
+          ),
+        ),
+        TextSpan(
+            text: " Live", style: TextStyle(color: Colors.white, fontSize: 16))
+      ])),
     );
   }
 }
