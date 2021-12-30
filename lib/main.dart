@@ -45,6 +45,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'SansSerifBldFLF',
         iconTheme: const IconThemeData(color: SwiftVote.textColor),
+        textTheme: Theme.of(context).textTheme.apply(
+              fontFamily: 'SansSerifBldFLF',
+              bodyColor: SwiftVote.textColor,
+              displayColor: SwiftVote.textColor,
+            ),
         primarySwatch: Colors.blue,
       ),
       home: const SplashScreen(),
