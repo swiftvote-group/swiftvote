@@ -149,7 +149,7 @@ class _LiveWidgetState extends State<LiveWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(4),
+      margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.red,
@@ -161,6 +161,7 @@ class _LiveWidgetState extends State<LiveWidget> {
           child: Icon(
             Icons.radio_button_on_rounded,
             color: Colors.white,
+            size: 16,
           ),
         ),
         TextSpan(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:swiftvote/registration/voter/voter.dart';
-import 'package:swiftvote/swiftvote.dart';
 
 class VoterRegScreen extends StatefulWidget {
   final List<TextEditingController> controllers;
@@ -18,20 +17,7 @@ class _VoterRegScreenState extends State<VoterRegScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const ListTile(
-          leading: CircleAvatar(
-            radius: 28,
-            child: FlutterLogo(),
-          ),
-          title: Text("University of Nigeria,Nsukka"),
-          subtitle: Text(
-            "General Electoral Vote",
-            style: TextStyle(
-                fontFamily: 'NotoSans',
-                color: SwiftVote.textColor,
-                fontSize: 13),
-          ),
-        ),
+        Voter.uniHeader(),
         const SizedBox(
           height: 16,
         ),

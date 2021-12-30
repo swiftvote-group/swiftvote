@@ -23,7 +23,8 @@ class Voter {
   }
 
   static Widget defNumberField(
-      BuildContext context, TextEditingController _controller) {
+      BuildContext context, TextEditingController _controller,
+      {bool isLast = false}) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: TextFormField(
@@ -36,7 +37,9 @@ class Voter {
         textAlignVertical: TextAlignVertical.center,
         onChanged: (value) {
           if (value.length == 1) {
-            FocusScope.of(context).nextFocus();
+            isLast
+                ? FocusScope.of(context).unfocus()
+                : FocusScope.of(context).nextFocus();
           }
         },
         decoration: const InputDecoration(
@@ -47,6 +50,21 @@ class Voter {
             borderSide: BorderSide(color: Color(0xFF7D848D)),
           ),
         ),
+      ),
+    );
+  }
+
+  static Widget uniHeader() {
+    return const ListTile(
+      leading: CircleAvatar(
+        radius: 28,
+        child: FlutterLogo(),
+      ),
+      title: Text("University of Nigeria,Nsukka"),
+      subtitle: Text(
+        "General Electoral Vote",
+        style: TextStyle(
+            fontFamily: 'NotoSans', color: SwiftVote.textColor, fontSize: 13),
       ),
     );
   }

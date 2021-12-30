@@ -40,8 +40,7 @@ class _HomePageState extends State<HomePage> {
                   child: TextFormField(
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.symmetric(vertical: -4),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 4),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(32)),
                         hintText: "Search for position",
@@ -51,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                           fontFamily: 'NotoSans',
                         ),
                         prefixIconConstraints:
-                            BoxConstraints(minWidth: 32, minHeight: 32),
+                            const BoxConstraints(minWidth: 32, minHeight: 32),
                         prefixIcon: const Icon(Icons.search_rounded)),
                   ),
                 )

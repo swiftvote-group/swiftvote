@@ -13,6 +13,10 @@ class _RecordingPageState extends State<RecordingPage>
     with TickerProviderStateMixin {
   Duration duration = const Duration(seconds: 1);
 
+  late final AnimationController _controller =
+      AnimationController(vsync: this, duration: duration)
+        ..repeat(reverse: true);
+
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 10), () {
@@ -23,6 +27,12 @@ class _RecordingPageState extends State<RecordingPage>
       );
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -40,8 +50,7 @@ class _RecordingPageState extends State<RecordingPage>
                   begin: Offset.zero,
                   end: const Offset(0.0, 0.2),
                 ).animate(CurvedAnimation(
-                  parent: AnimationController(vsync: this, duration: duration)
-                    ..repeat(reverse: true),
+                  parent: _controller,
                   curve: Curves.linear,
                 )),
                 child: eachBar(const Color(0xFFED4C5C)),
@@ -51,8 +60,7 @@ class _RecordingPageState extends State<RecordingPage>
                   begin: const Offset(0.0, 0.1),
                   end: const Offset(0.0, 0.1),
                 ).animate(CurvedAnimation(
-                  parent: AnimationController(vsync: this, duration: duration)
-                    ..repeat(reverse: true),
+                  parent: _controller,
                   curve: Curves.linear,
                 )),
                 child: eachBar(const Color(0xFFFBC801)),
@@ -62,8 +70,7 @@ class _RecordingPageState extends State<RecordingPage>
                   begin: const Offset(0.0, 0.2),
                   end: Offset.zero,
                 ).animate(CurvedAnimation(
-                  parent: AnimationController(vsync: this, duration: duration)
-                    ..repeat(reverse: true),
+                  parent: _controller,
                   curve: Curves.linear,
                 )),
                 child: eachBar(const Color(0xFFBA68C8)),

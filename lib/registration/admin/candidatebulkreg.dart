@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swiftvote/home/positionpage.dart';
+import 'package:swiftvote/registration/admin/adminreceipt.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class CandBulkRegPage extends StatefulWidget {
@@ -131,8 +131,8 @@ class _CandBulkRegPageState extends State<CandBulkRegPage> {
               const Spacer(),
               Align(
                   alignment: Alignment.centerRight,
-                  child: SwiftVote.defButton(
-                      context, const PositionPage(), "Next")),
+                  child:
+                      SwiftVote.defButton(context, AdminReceiptPage(), "Next")),
               const Spacer(),
             ]),
           ),
