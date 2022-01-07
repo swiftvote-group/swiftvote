@@ -83,4 +83,143 @@ class SwiftVote {
       ),
     );
   }
+
+  static Widget defTextFormField(
+      String hint, double width, TextEditingController _controller) {
+    return SizedBox(
+      width: width - 32,
+      child: TextFormField(
+        controller: _controller,
+        decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderSide: const BorderSide(color: Color(0xFF7D848D)),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            isDense: true,
+            hintText: hint,
+            hintStyle: const TextStyle(fontSize: 13, fontFamily: 'NotoSans')),
+      ),
+    );
+  }
+
+  static Widget defNumberField(
+      BuildContext context, TextEditingController _controller,
+      {bool isLast = false}) {
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: TextFormField(
+        controller: _controller,
+        maxLength: 1,
+        style: const TextStyle(
+            fontSize: 20, fontFamily: 'NotoSans', color: SwiftVote.textColor),
+        keyboardType: TextInputType.number,
+        textAlign: TextAlign.center,
+        textAlignVertical: TextAlignVertical.center,
+        onChanged: (value) {
+          if (value.length == 1) {
+            isLast
+                ? FocusScope.of(context).unfocus()
+                : FocusScope.of(context).nextFocus();
+          }
+        },
+        decoration: const InputDecoration(
+          counterText: '',
+          constraints: BoxConstraints(
+              minWidth: 32, minHeight: 32, maxWidth: 48, maxHeight: 48),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFF7D848D)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget uniHeader() {
+    return const ListTile(
+      leading: CircleAvatar(
+        radius: 28,
+        child: FlutterLogo(),
+      ),
+      title: Text("University of Nigeria,Nsukka"),
+      subtitle: Text(
+        "General Electoral Vote",
+        style: TextStyle(
+            fontFamily: 'NotoSans', color: SwiftVote.textColor, fontSize: 13),
+      ),
+    );
+  }
+}
+
+class VerificationScreen extends StatefulWidget {
+  final List<TextEditingController> controllers;
+  const VerificationScreen(this.controllers, {Key? key}) : super(key: key);
+
+  @override
+  _VerificationScreenState createState() => _VerificationScreenState();
+}
+
+class _VerificationScreenState extends State<VerificationScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 64),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 4,
+              children: [
+                SwiftVote.defNumberField(context, widget.controllers[0]),
+                const Icon(
+                  Icons.remove,
+                ),
+                SwiftVote.defNumberField(context, widget.controllers[1]),
+                const Icon(Icons.remove),
+                SwiftVote.defNumberField(context, widget.controllers[2]),
+                const Icon(Icons.remove),
+                SwiftVote.defNumberField(context, widget.controllers[3]),
+              ],
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            const Text(
+              "Verification Code",
+              style: TextStyle(color: SwiftVote.textColor),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            const Text.rich(TextSpan(
+                text:
+                    "This code will automatically expire at the countdown of ",
+                style: TextStyle(
+                    fontSize: 10,
+                    color: SwiftVote.textColor,
+                    fontFamily: 'NotoSans'),
+                children: [
+                  TextSpan(
+                    text: "14:58",
+                    style: TextStyle(color: Colors.red),
+                  )
+                ])),
+            const SizedBox(
+              height: 8,
+            ),
+            const Text(
+              "Resend ?",
+              style: TextStyle(
+                  fontSize: 10,
+                  fontFamily: 'NotoSans',
+                  color: SwiftVote.primaryColor),
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }

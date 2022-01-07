@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:swiftvote/registration/voter/recording.dart';
-import 'package:swiftvote/registration/voter/voternextscreen.dart';
-import 'package:swiftvote/registration/voter/voterregscreen.dart';
-import 'package:swiftvote/registration/voter/voteruploadscreen.dart';
+import 'package:swiftvote/registration/admin/adminreg.dart';
+import 'package:swiftvote/registration/forgotpassword/fpthird.dart';
 import 'package:swiftvote/swiftvote.dart';
 
-class VoterRegistrationPage extends StatefulWidget {
-  const VoterRegistrationPage({Key? key}) : super(key: key);
+import 'fpfirst.dart';
+
+class FPasswordPage extends StatefulWidget {
+  const FPasswordPage({Key? key}) : super(key: key);
 
   @override
-  _VoterRegistrationPageState createState() => _VoterRegistrationPageState();
+  _FPasswordPageState createState() => _FPasswordPageState();
 }
 
-class _VoterRegistrationPageState extends State<VoterRegistrationPage> {
+class _FPasswordPageState extends State<FPasswordPage> {
   int _curScreen = 0;
   List<TextEditingController> controllers = [];
   List<Widget> screens = [];
-  List<String> btnText = ["Next", "Send Code", "Confirm", "Confirm"];
+  List<String> btnText = ["Send Code", "Confirm", "Confirm"];
 
   @override
   void initState() {
-    controllers = List.generate(12, (index) => TextEditingController());
+    controllers = List.generate(7, (index) => TextEditingController());
     screens = [
-      VoterRegScreen(controllers.sublist(0, 6)),
-      VoterNextScreen(controllers.sublist(6, 8)),
-      VerificationScreen(controllers.sublist(8)),
-      const VoterUploadScreen(),
+      FPFirstScreen(controllers[0]),
+      VerificationScreen(controllers.sublist(1, 5)),
+      FPThirdScreen(controllers.sublist(5)),
     ];
     super.initState();
   }
@@ -34,7 +33,9 @@ class _VoterRegistrationPageState extends State<VoterRegistrationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: SwiftVote.defAppBar("Voter"),
+      appBar: SwiftVote.defAppBar(
+        "Forgot Password",
+      ),
       body: SingleChildScrollView(
         child: SizedBox(
           height: MediaQuery.of(context).size.height - 100,
@@ -48,11 +49,11 @@ class _VoterRegistrationPageState extends State<VoterRegistrationPage> {
                   child: TextButton(
                     onPressed: () {
                       setState(() {
-                        if (_curScreen == 3) {
+                        if (_curScreen == 2) {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
                               builder: (BuildContext context) =>
-                                  const RecordingPage(),
+                                  const AdminRegPage(),
                             ),
                           );
                         } else {

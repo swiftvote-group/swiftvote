@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:swiftvote/swiftvote.dart';
 
-class VoterNextScreen extends StatefulWidget {
+class FPThirdScreen extends StatefulWidget {
   final List<TextEditingController> controllers;
-  const VoterNextScreen(this.controllers, {Key? key}) : super(key: key);
+  const FPThirdScreen(this.controllers, {Key? key}) : super(key: key);
 
   @override
-  _VoterNextScreenState createState() => _VoterNextScreenState();
+  _FPThirdScreenState createState() => _FPThirdScreenState();
 }
 
-class _VoterNextScreenState extends State<VoterNextScreen> {
+class _FPThirdScreenState extends State<FPThirdScreen> {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -19,19 +19,15 @@ class _VoterNextScreenState extends State<VoterNextScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          SwiftVote.defTextFormField(
-              "School Email Address", w, widget.controllers[0]),
+          SwiftVote.defTextFormField("New Password", w, widget.controllers[0]),
           const SizedBox(
             height: 32,
           ),
-          SwiftVote.defTextFormField("Phone Number", w, widget.controllers[1]),
+          SwiftVote.defTextFormField(
+              "Confirm Password", w, widget.controllers[1]),
           const SizedBox(
             height: 16,
           ),
-          const Text(
-            "A code will be sent to this email address and phone number.",
-            style: TextStyle(fontSize: 10, fontFamily: 'NotoSans'),
-          )
         ],
       ),
     );

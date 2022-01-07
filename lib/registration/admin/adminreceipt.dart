@@ -50,7 +50,7 @@ class AdminReceiptPage extends StatelessWidget {
                 width: w,
                 child: Column(
                   children: [
-                    Voter.uniHeader(),
+                    SwiftVote.uniHeader(),
                     const SizedBox(
                       height: 32,
                     ),

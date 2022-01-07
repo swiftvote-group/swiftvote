@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swiftvote/registration/voter/voter.dart';
+import 'package:swiftvote/swiftvote.dart';
 
 class VoterRegScreen extends StatefulWidget {
   final List<TextEditingController> controllers;
@@ -17,7 +17,7 @@ class _VoterRegScreenState extends State<VoterRegScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Voter.uniHeader(),
+        SwiftVote.uniHeader(),
         const SizedBox(
           height: 16,
         ),
@@ -25,13 +25,15 @@ class _VoterRegScreenState extends State<VoterRegScreen> {
           spacing: 8,
           runSpacing: 32,
           children: [
-            Voter.defTextFormField("Surname", w / 2, widget.controllers[0]),
-            Voter.defTextFormField("Initials", w / 2, widget.controllers[1]),
-            Voter.defTextFormField("School registration number (Reg no.)", w,
-                widget.controllers[2]),
-            Voter.defTextFormField("Level", w / 2, widget.controllers[3]),
-            Voter.defTextFormField("Department", w / 2, widget.controllers[4]),
-            Voter.defTextFormField("Faculty", w, widget.controllers[5]),
+            SwiftVote.defTextFormField("Surname", w / 2, widget.controllers[0]),
+            SwiftVote.defTextFormField(
+                "Initials", w / 2, widget.controllers[1]),
+            SwiftVote.defTextFormField("School registration number (Reg no.)",
+                w, widget.controllers[2]),
+            SwiftVote.defTextFormField("Level", w / 2, widget.controllers[3]),
+            SwiftVote.defTextFormField(
+                "Department", w / 2, widget.controllers[4]),
+            SwiftVote.defTextFormField("Faculty", w, widget.controllers[5]),
           ],
         ),
         const SizedBox(
