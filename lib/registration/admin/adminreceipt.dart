@@ -51,9 +51,7 @@ class AdminReceiptPage extends StatelessWidget {
                 child: Column(
                   children: [
                     SwiftVote.uniHeader(),
-                    const SizedBox(
-                      height: 32,
-                    ),
+                    const Spacer(),
                     Table(
                       columnWidths: {
                         0: FixedColumnWidth(w / 3),
@@ -65,9 +63,7 @@ class AdminReceiptPage extends StatelessWidget {
                           (index) => defRow(
                               data.sublist(0 + (index * 3), 3 + (index * 3)))),
                     ),
-                    const SizedBox(
-                      height: 32,
-                    ),
+                    const Spacer(),
                     const Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(

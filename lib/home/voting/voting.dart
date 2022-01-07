@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swiftvote/home/poll/gamification.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class VotingPage extends StatefulWidget {
@@ -35,7 +36,9 @@ class _VotingPageState extends State<VotingPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                     child: const Text(
                       "No, don't vote!",
                       style: TextStyle(
@@ -60,7 +63,15 @@ class _VotingPageState extends State<VotingPage> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) =>
+                              const GamificationPage(),
+                        ),
+                      );
+                    },
                     child: const Text(
                       "Yes! Vote",
                       style: TextStyle(

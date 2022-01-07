@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swiftvote/home/positionpage.dart';
 import 'package:swiftvote/swiftvote.dart';
 
@@ -25,15 +26,14 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text.rich(TextSpan(
-                    text: "Hey there !",
-                    style: TextStyle(fontSize: 18, color: SwiftVote.textColor),
+                Text.rich(TextSpan(
+                    text: "Hey there !  ",
+                    style: const TextStyle(
+                        fontSize: 18, color: SwiftVote.textColor),
                     children: [
                       WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
-                          child: FlutterLogo(
-                            size: 32,
-                          ))
+                          child: SvgPicture.asset("assets/images/welcome.svg"))
                     ])),
                 SizedBox(
                   width: h / 5,

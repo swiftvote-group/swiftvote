@@ -39,7 +39,7 @@ class CandidateCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 3.2,
+      height: MediaQuery.of(context).size.height / 3.1,
       padding: const EdgeInsets.all(8),
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -86,7 +86,7 @@ class CandidateCard extends StatelessWidget {
                 ),
                 style: ButtonStyle(
                   minimumSize: MaterialStateProperty.all<Size?>(
-                      Size.copy(const Size(150, 24))),
+                      Size.copy(const Size(140, 24))),
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.white),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -117,7 +117,7 @@ class CandidateCard extends StatelessWidget {
                 ),
                 style: ButtonStyle(
                   minimumSize: MaterialStateProperty.all<Size?>(
-                      Size.copy(const Size(150, 24))),
+                      Size.copy(const Size(140, 24))),
                   backgroundColor:
                       MaterialStateProperty.all<Color>(SwiftVote.primaryColor),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
