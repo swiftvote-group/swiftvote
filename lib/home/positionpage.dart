@@ -137,36 +137,3 @@ class CandidateCard extends StatelessWidget {
     );
   }
 }
-
-class LiveWidget extends StatefulWidget {
-  const LiveWidget({Key? key}) : super(key: key);
-
-  @override
-  _LiveWidgetState createState() => _LiveWidgetState();
-}
-
-class _LiveWidgetState extends State<LiveWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.red,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: const Text.rich(TextSpan(children: [
-        WidgetSpan(
-          alignment: PlaceholderAlignment.middle,
-          child: Icon(
-            Icons.radio_button_on_rounded,
-            color: Colors.white,
-            size: 16,
-          ),
-        ),
-        TextSpan(
-            text: " Live", style: TextStyle(color: Colors.white, fontSize: 16))
-      ])),
-    );
-  }
-}

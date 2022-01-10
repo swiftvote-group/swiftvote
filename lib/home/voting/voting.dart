@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swiftvote/home/poll/gamification.dart';
+import 'package:swiftvote/home/voting/fingerprint.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class VotingPage extends StatefulWidget {
@@ -68,7 +69,7 @@ class _VotingPageState extends State<VotingPage> {
                         context,
                         MaterialPageRoute<void>(
                           builder: (BuildContext context) =>
-                              const GamificationPage(),
+                              const FingerprintPage(),
                         ),
                       );
                     },

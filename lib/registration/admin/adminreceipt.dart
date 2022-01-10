@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swiftvote/home_admin/adminhome.dart';
 import 'package:swiftvote/registration/voter/voter.dart';
 import 'package:swiftvote/swiftvote.dart';
 
@@ -98,7 +99,8 @@ class AdminReceiptPage extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            SwiftVote.defButton(context, null, "Host this election"),
+            SwiftVote.defButton(
+                context, const AdminHomePage(), "Host this election"),
             const Spacer(),
           ],
         ),

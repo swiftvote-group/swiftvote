@@ -1,29 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:swiftvote/home/homepage.dart';
-import 'package:swiftvote/home/listing/listingscreen.dart';
-import 'package:swiftvote/home/poll/pollpage.dart';
+import 'package:swiftvote/home_admin/vote_activity/adminvoteactivity.dart';
 import 'package:swiftvote/swiftvote.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+class AdminHomePage extends StatefulWidget {
+  const AdminHomePage({Key? key}) : super(key: key);
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _AdminHomePageState createState() => _AdminHomePageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _AdminHomePageState extends State<AdminHomePage> {
   int _currentScreen = 0;
   List<Widget> screens = [
-    const HomePage(),
-    const ListingPage(),
-    const PollPage(),
-    const HomePage()
+    const AdminVoteActivity(),
+    const AdminVoteActivity(),
+    const AdminVoteActivity(),
   ];
   Map<String, IconData> tabs = {
-    "Home": Icons.home_rounded,
-    "Listing": Icons.people_alt_rounded,
+    "Home": Icons.space_dashboard,
     "Poll": Icons.equalizer_rounded,
-    "Me": Icons.person_rounded,
+    "Me": Icons.contact_mail_rounded,
   };
 
   @override

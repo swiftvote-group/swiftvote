@@ -21,6 +21,7 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
           spacing: 8,
           runSpacing: 32,
           children: [
+            SwiftVote.dropdownField("Name of school", w),
             SwiftVote.defTextFormField("Surname", w / 2, widget.controllers[0]),
             SwiftVote.defTextFormField(
                 "Initials", w / 2, widget.controllers[1]),
@@ -32,6 +33,8 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                 "School ID Number", w / 2, widget.controllers[4]),
             SwiftVote.defTextFormField(
                 "School Email Address", w, widget.controllers[5]),
+            SwiftVote.dropdownField("Number of admins", w / 2),
+            SwiftVote.dropdownField("Type of election", w / 2),
           ],
         ),
         const SizedBox(
