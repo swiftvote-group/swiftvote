@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:swiftvote/home/profilepage.dart';
 import 'package:swiftvote/home/voting/voting.dart';
 import 'package:swiftvote/swiftvote.dart';
 
@@ -107,8 +108,17 @@ Widget positionOwner() {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            FlutterLogo(
-              size: h * 0.6,
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => const ProfilePage(),
+                  ),
+                );
+              },
+              child: FlutterLogo(
+                size: h * 0.6,
+              ),
             ),
             Text(
               "Darlington Ezeh",

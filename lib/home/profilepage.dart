@@ -13,6 +13,12 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: SwiftVote.defAppBar("Candidate",
+          hasBack: true,
+          context: context,
+          hasBottom: false,
+          bColor: SwiftVote.primaryColor,
+          tColor: Colors.white),
       body: Stack(
         children: [
           Positioned(
@@ -20,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
               left: 0,
               right: 0,
               child: Container(
-                height: MediaQuery.of(context).size.height / 3,
+                height: (MediaQuery.of(context).size.height / 3) - 56,
                 width: double.maxFinite,
                 decoration: BoxDecoration(
                     color: SwiftVote.primaryColor,
@@ -29,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         bottomRight: Radius.circular(16))),
               )),
           Positioned(
-              top: MediaQuery.of(context).size.height / 6,
+              top: (MediaQuery.of(context).size.height / 6) - 56,
               left: 0,
               right: 0,
               child: profHeader()),
@@ -111,6 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Column(
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 decoration: BoxDecoration(

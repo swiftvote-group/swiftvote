@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swiftvote/home/poll/gamification.dart';
@@ -44,6 +46,40 @@ class PollHeader extends StatefulWidget {
 }
 
 class _PollHeaderState extends State<PollHeader> {
+  final int timerMaxSeconds =
+      (DateTime(2022, 2, 5, 23, 00).millisecondsSinceEpoch -
+              DateTime.now().millisecondsSinceEpoch) ~/
+          1000;
+
+  final interval = const Duration(seconds: 1);
+
+  int currentSeconds = 0;
+
+  String get secText =>
+      ((timerMaxSeconds - currentSeconds) % 60).toString().padLeft(2, '0');
+
+  String get minText => ((timerMaxSeconds - currentSeconds) ~/ 60 % 60)
+      .toString()
+      .padLeft(2, '0');
+
+  String get hourText =>
+      ((timerMaxSeconds - currentSeconds) ~/ 3600).toString().padLeft(2, '0');
+
+  @override
+  void initState() {
+    dynamic duration = interval;
+    Timer.periodic(duration, (timer) {
+      if (mounted) {
+        setState(() {
+          //print(timer.tick);
+          currentSeconds = timer.tick;
+          if (timer.tick >= timerMaxSeconds) timer.cancel();
+        });
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -61,15 +97,15 @@ class _PollHeaderState extends State<PollHeader> {
           },
           child: SvgPicture.asset("assets/images/gamer.svg")),
       const Spacer(),
-      timerCard("19hrs"),
+      timerCard('${hourText}hrs'),
       const SizedBox(
         width: 4,
       ),
-      timerCard("32mins"),
+      timerCard('${minText}mins'),
       const SizedBox(
         width: 4,
       ),
-      timerCard("15secs"),
+      timerCard('${secText}secs'),
       const SizedBox(
         width: 4,
       ),

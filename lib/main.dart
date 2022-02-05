@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftvote/registration/splashscreen/splashscreen.dart';
+import 'package:swiftvote/registration/voter/votelink.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 Future<void> main() async {
@@ -30,13 +32,30 @@ Future<void> main() async {
     statusBarColor: Colors.black.withOpacity(0),
     statusBarIconBrightness: Brightness.dark,
   ));
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  int hasOpened = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _prefs.then((SharedPreferences prefs) {
+      hasOpened = prefs.getInt('splash_counter') ?? 0;
+      prefs.setInt('splash_counter', hasOpened + 1);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -52,7 +71,7 @@ class MyApp extends StatelessWidget {
             ),
         primarySwatch: Colors.blue,
       ),
-      home: const SplashScreen(),
+      home: hasOpened == 0 ? const SplashScreen() : const VoteLinkPage(),
     );
   }
 }

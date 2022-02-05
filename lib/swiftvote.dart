@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'dart:async';
 
 class SwiftVote {
   //General
@@ -39,31 +40,37 @@ class SwiftVote {
   }
 
   static AppBar defAppBar(String title,
-      {bool hasBack = false, BuildContext? context}) {
+      {bool hasBack = false,
+      BuildContext? context,
+      bool hasBottom = true,
+      Color bColor = Colors.white,
+      Color tColor = SwiftVote.textColor}) {
     return AppBar(
       centerTitle: true,
       title: Text(
         title,
-        style: const TextStyle(fontSize: 20, color: textColor),
+        style: TextStyle(fontSize: 20, color: tColor),
       ),
       leading: hasBack
           ? IconButton(
               onPressed: () {
                 Navigator.of(context!).pop();
               },
-              icon: const Icon(
+              icon: Icon(
                 Icons.chevron_left_rounded,
-                color: textColor,
+                color: tColor,
               ))
           : null,
-      backgroundColor: Colors.white,
+      backgroundColor: bColor,
       elevation: 0,
-      bottom: PreferredSize(
-          child: Container(
-            color: const Color(0xFF726F6F),
-            height: 1.0,
-          ),
-          preferredSize: const Size.fromHeight(1.0)),
+      bottom: hasBottom
+          ? PreferredSize(
+              child: Container(
+                color: const Color(0xFF726F6F),
+                height: 1.0,
+              ),
+              preferredSize: const Size.fromHeight(1.0))
+          : null,
     );
   }
 
@@ -71,7 +78,9 @@ class SwiftVote {
       {Color bcolor = primaryColor, bool isWide = false}) {
     return TextButton(
       onPressed: screen == null
-          ? () {}
+          ? () {
+              Navigator.of(context).pop();
+            }
           : () {
               Navigator.pushReplacement(
                 context,
@@ -335,6 +344,35 @@ class VerificationScreen extends StatefulWidget {
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
+  final interval = const Duration(seconds: 1);
+
+  final int timerMaxSeconds = 900;
+
+  int currentSeconds = 0;
+
+  String get timerText =>
+      '${((timerMaxSeconds - currentSeconds) ~/ 60).toString().padLeft(2, '0')}: ${((timerMaxSeconds - currentSeconds) % 60).toString().padLeft(2, '0')}';
+
+  @override
+  void initState() {
+    dynamic duration = interval;
+    Timer.periodic(duration, (timer) {
+      if (mounted) {
+        setState(() {
+          //print(timer.tick);
+          currentSeconds = timer.tick;
+          if (timer.tick >= timerMaxSeconds) timer.cancel();
+        });
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -370,17 +408,17 @@ class _VerificationScreenState extends State<VerificationScreen> {
             const SizedBox(
               height: 8,
             ),
-            const Text.rich(TextSpan(
+            Text.rich(TextSpan(
                 text:
                     "This code will automatically expire at the countdown of ",
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 10,
                     color: SwiftVote.textColor,
                     fontFamily: 'NotoSans'),
                 children: [
                   TextSpan(
-                    text: "14:58",
-                    style: TextStyle(color: Colors.red),
+                    text: timerText,
+                    style: const TextStyle(color: Colors.red),
                   )
                 ])),
             const SizedBox(
