@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swiftvote/registration/admin/adminreg.dart';
+import 'package:swiftvote/registration/voter/votelink.dart';
 import 'package:swiftvote/registration/voter/voterregistration.dart';
 import 'package:swiftvote/swiftvote.dart';
 
@@ -210,7 +211,7 @@ class _LastSplashScreenState extends State<LastSplashScreen> {
                               context,
                               MaterialPageRoute<void>(
                                 builder: (BuildContext context) =>
-                                    const VoterRegistrationPage(),
+                                    const VoteLinkPage(),
                               ),
                             );
                           },

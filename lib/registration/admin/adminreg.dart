@@ -34,11 +34,12 @@ class _AdminRegPageState extends State<AdminRegPage> {
                 const SizedBox(
                   height: 8,
                 ),
-                signinField(Icons.contact_mail_rounded, "Enter Admin ID", w),
+                SwiftVote.signinField(
+                    Icons.contact_mail_rounded, "Enter Admin ID", w),
                 const SizedBox(
                   height: 8,
                 ),
-                signinField(Icons.password_rounded, "Password", w),
+                SwiftVote.signinField(Icons.password_rounded, "Password", w),
                 const SizedBox(
                   height: 8,
                 ),
@@ -129,23 +130,4 @@ class _AdminRegPageState extends State<AdminRegPage> {
       ),
     );
   }
-}
-
-Widget signinField(IconData iconData, String hint, double w) {
-  return Card(
-    margin: const EdgeInsets.all(8),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-    elevation: 4,
-    child: SizedBox(
-      width: w,
-      child: TextFormField(
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(borderSide: BorderSide.none),
-          suffixIcon: Icon(iconData),
-          hintText: hint,
-          hintStyle: const TextStyle(fontSize: 13, fontFamily: 'NotoSans'),
-        ),
-      ),
-    ),
-  );
 }

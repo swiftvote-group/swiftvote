@@ -19,7 +19,7 @@ class _RecordingPageState extends State<RecordingPage>
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 10), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (BuildContext context) => const MainPage(),

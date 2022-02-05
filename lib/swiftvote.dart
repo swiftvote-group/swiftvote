@@ -38,13 +38,24 @@ class SwiftVote {
     );
   }
 
-  static AppBar defAppBar(String title) {
+  static AppBar defAppBar(String title,
+      {bool hasBack = false, BuildContext? context}) {
     return AppBar(
       centerTitle: true,
       title: Text(
         title,
         style: const TextStyle(fontSize: 20, color: textColor),
       ),
+      leading: hasBack
+          ? IconButton(
+              onPressed: () {
+                Navigator.of(context!).pop();
+              },
+              icon: const Icon(
+                Icons.chevron_left_rounded,
+                color: textColor,
+              ))
+          : null,
       backgroundColor: Colors.white,
       elevation: 0,
       bottom: PreferredSize(
@@ -210,6 +221,25 @@ class SwiftVote {
       //   SizedBox(width: 32,),
       //   Radio(value: value, groupValue: groupValue, onChanged: onChanged)
       // ],),
+    );
+  }
+
+  static Widget signinField(IconData iconData, String hint, double w) {
+    return Card(
+      margin: const EdgeInsets.all(8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      elevation: 4,
+      child: SizedBox(
+        width: w,
+        child: TextFormField(
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(borderSide: BorderSide.none),
+            suffixIcon: Icon(iconData),
+            hintText: hint,
+            hintStyle: const TextStyle(fontSize: 13, fontFamily: 'NotoSans'),
+          ),
+        ),
+      ),
     );
   }
 

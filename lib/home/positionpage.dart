@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swiftvote/home/profilepage.dart';
 import 'package:swiftvote/home/voting/voting.dart';
 import 'package:swiftvote/registration/abouttologout.dart';
 import 'package:swiftvote/swiftvote.dart';
@@ -71,8 +72,7 @@ class CandidateCard extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>
-                          const AboutToLogOutPage(),
+                      builder: (BuildContext context) => const ProfilePage(),
                     ),
                   );
                 },

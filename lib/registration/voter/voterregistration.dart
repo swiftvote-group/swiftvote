@@ -16,7 +16,13 @@ class _VoterRegistrationPageState extends State<VoterRegistrationPage> {
   int _curScreen = 0;
   List<TextEditingController> controllers = [];
   List<Widget> screens = [];
-  List<String> btnText = ["Next", "Send Code", "Confirm", "Confirm"];
+  List<String> btnText = [
+    "Next",
+    "Send Code",
+    "Confirm",
+    "Scan Face",
+    "Confirm"
+  ];
 
   @override
   void initState() {
@@ -25,7 +31,8 @@ class _VoterRegistrationPageState extends State<VoterRegistrationPage> {
       VoterRegScreen(controllers.sublist(0, 6)),
       VoterNextScreen(controllers.sublist(6, 8)),
       VerificationScreen(controllers.sublist(8)),
-      const VoterUploadScreen(),
+      VoterUploadScreen(true),
+      VoterUploadScreen(false),
     ];
     super.initState();
   }
@@ -48,7 +55,7 @@ class _VoterRegistrationPageState extends State<VoterRegistrationPage> {
                   child: TextButton(
                     onPressed: () {
                       setState(() {
-                        if (_curScreen == 3) {
+                        if (_curScreen == 4) {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
                               builder: (BuildContext context) =>
