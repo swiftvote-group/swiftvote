@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:swiftvote/chart/line/mline.dart';
+import 'package:swiftvote/home_admin/adminhomeheader.dart';
+import 'package:swiftvote/home_admin/profile/adminprofileheader.dart';
+import 'package:swiftvote/models/shortmodels.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class AdminVoteActivity extends StatefulWidget {
-  const AdminVoteActivity({Key? key}) : super(key: key);
+  final CandData? cd;
+  const AdminVoteActivity({this.cd, Key? key}) : super(key: key);
 
   @override
   _AdminVoteActivityState createState() => _AdminVoteActivityState();
@@ -10,6 +15,13 @@ class AdminVoteActivity extends StatefulWidget {
 
 class _AdminVoteActivityState extends State<AdminVoteActivity> {
   int curPos = 0;
+  List<String> voteHeaders = ["S/N", "Name", "Dept", "Time"];
+  List<String> voteChildren = [
+    "0",
+    "Francisca John",
+    "Electronic Engineering",
+    "9:07"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -19,43 +31,28 @@ class _AdminVoteActivityState extends State<AdminVoteActivity> {
         padding: const EdgeInsets.only(top: 8.0),
         child: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.only(left: 8),
-              padding:
-                  const EdgeInsets.only(left: 8, top: 4, bottom: 4, right: 8),
-              decoration: const BoxDecoration(
-                  color: SwiftVote.primaryColor,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(4),
-                      bottomLeft: Radius.circular(4))),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                    children: List.generate(
-                        15,
-                        (index) => GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                curPos = index;
-                              });
-                            },
-                            child: positionTab("SUG", curPos == index)))),
-              ),
+            AdminHomeHeader(
+              cd: widget.cd,
             ),
             const SizedBox(
               height: 8,
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.generate(
-                    8,
-                    (index) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SwiftVote.livePollUser(),
-                        )),
-              ),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: MLine(),
             ),
+            // SingleChildScrollView(
+            //   scrollDirection: Axis.horizontal,
+            //   child: Row(
+            //     children: List.generate(
+            //         8,
+            //         (index) => Padding(
+            //               padding: const EdgeInsets.all(8.0),
+            //               child: SwiftVote.livePollUser(),
+            //             )),
+            //   ),
+            // ),
+            SwiftVote.adminPageText("Vote Activity"),
             const SizedBox(
               height: 8,
             ),
@@ -74,19 +71,20 @@ class _AdminVoteActivityState extends State<AdminVoteActivity> {
                       verticalInside:
                           BorderSide(color: Color(0xFFDADADA), width: 2),
                     ),
-                    defaultColumnWidth: FixedColumnWidth(0.2 * w),
+                    defaultColumnWidth: FixedColumnWidth(0.33 * w),
                     columnWidths: const {0: FixedColumnWidth(32)},
                     children: [
                       TableRow(
                           children: List.generate(
-                              10,
-                              (j) => Container(
-                                    color: Colors.lightBlueAccent,
+                              voteHeaders.length,
+                              (j) => Padding(
+                                    padding: const EdgeInsets.all(4.0),
                                     child: Text(
-                                      "Name",
-                                      style: TextStyle(
+                                      voteHeaders[j],
+                                      style: const TextStyle(
                                           fontFamily: 'NotoSans',
-                                          fontSize: 11,
+                                          fontSize: 12,
+                                          color: Color(0xFF003478),
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ))),
@@ -94,14 +92,14 @@ class _AdminVoteActivityState extends State<AdminVoteActivity> {
                           50,
                           (i) => TableRow(
                               children: List.generate(
-                                  10,
-                                  (j) => Container(
-                                        color: Colors.redAccent,
+                                  voteHeaders.length,
+                                  (j) => Padding(
+                                        padding: const EdgeInsets.all(4.0),
                                         child: Text(
-                                          "Voted",
-                                          style: TextStyle(
+                                          j == 0 ? "${i + 1}" : voteChildren[j],
+                                          style: const TextStyle(
                                               fontFamily: 'NotoSans',
-                                              fontSize: 11),
+                                              fontSize: 12),
                                         ),
                                       ))))
                     ],
@@ -114,27 +112,4 @@ class _AdminVoteActivityState extends State<AdminVoteActivity> {
       ),
     );
   }
-}
-
-Widget positionTab(String data, bool isSelected) {
-  return Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Text(
-        data,
-        style: const TextStyle(fontFamily: 'NotoSans', color: Colors.white),
-      ),
-      const SizedBox(
-        height: 4,
-      ),
-      Container(
-        height: isSelected ? 3 : 1,
-        width: 32,
-        decoration: BoxDecoration(
-          borderRadius: isSelected ? BorderRadius.circular(4) : null,
-          color: isSelected ? const Color(0xFFADC6FF) : const Color(0xFF164B90),
-        ),
-      )
-    ],
-  );
 }

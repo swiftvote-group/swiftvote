@@ -91,7 +91,7 @@ Widget positionTile(String data) {
         Wrap(
             runSpacing: 8,
             spacing: 8,
-            children: List.generate(6, (index) => positionOwner())),
+            children: List.generate(4, (index) => positionOwner())),
       ],
     ),
   );
@@ -100,7 +100,7 @@ Widget positionTile(String data) {
 Widget positionOwner() {
   return Builder(builder: (context) {
     double h = MediaQuery.of(context).size.height / 4.5;
-    double w = MediaQuery.of(context).size.width / 3.5;
+    double w = MediaQuery.of(context).size.width / 2.5;
     return SizedBox(
       height: h,
       width: w,

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:swiftvote/models/shortmodels.dart';
 import 'package:swiftvote/registration/splashscreen/splashscreen.dart';
 import 'package:swiftvote/registration/voter/votelink.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await MyPrefs.init();
   await precachePicture(
     ExactAssetPicture(
         SvgPicture.svgStringDecoderBuilder, 'assets/images/sspage1.svg'),
@@ -32,7 +34,10 @@ Future<void> main() async {
     statusBarColor: Colors.black.withOpacity(0),
     statusBarIconBrightness: Brightness.dark,
   ));
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (_) => MyNotif(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -43,17 +48,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   int hasOpened = 0;
 
   @override
   void initState() {
     super.initState();
 
-    _prefs.then((SharedPreferences prefs) {
-      hasOpened = prefs.getInt('splash_counter') ?? 0;
-      prefs.setInt('splash_counter', hasOpened + 1);
-    });
+    hasOpened = MyPrefs.getDefInt("SPLASH_COUNTER") ?? 0;
+    MyPrefs.setDefInt("SPLASH_COUNTER", hasOpened + 1);
   }
 
   @override
@@ -71,7 +73,11 @@ class _MyAppState extends State<MyApp> {
             ),
         primarySwatch: Colors.blue,
       ),
-      home: hasOpened == 0 ? const SplashScreen() : const VoteLinkPage(),
+      home: hasOpened == 0
+          ? const SplashScreen()
+          : const SplashScreen(
+              cstate: 3,
+            ),
     );
   }
 }

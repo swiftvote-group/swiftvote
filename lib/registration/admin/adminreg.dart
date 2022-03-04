@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:swiftvote/home_admin/adminhome.dart';
 import 'package:swiftvote/registration/admin/adminsharelink.dart';
 import 'package:swiftvote/registration/admin/adminsignup.dart';
 import 'package:swiftvote/registration/forgotpassword/fpassword.dart';
@@ -67,7 +68,7 @@ class _AdminRegPageState extends State<AdminRegPage> {
                   ),
                 ),
                 const Spacer(),
-                SwiftVote.defButton(context, null, "Enter"),
+                SwiftVote.defButton(context, const AdminHomePage(), "Enter"),
                 const SizedBox(
                   height: 16,
                 ),

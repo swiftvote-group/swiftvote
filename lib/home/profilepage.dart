@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swiftvote/home/poll/gamification.dart';
 import 'package:swiftvote/home/voting/voting.dart';
 import 'package:swiftvote/swiftvote.dart';
 
@@ -143,7 +144,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute<void>(
-                        builder: (BuildContext context) => const VotingPage(),
+                        builder: (BuildContext context) =>
+                            const GamificationPage(),
                       ),
                     );
                   },

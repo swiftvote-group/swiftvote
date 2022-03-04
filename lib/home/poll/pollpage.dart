@@ -47,7 +47,7 @@ class PollHeader extends StatefulWidget {
 
 class _PollHeaderState extends State<PollHeader> {
   final int timerMaxSeconds =
-      (DateTime(2022, 2, 5, 23, 00).millisecondsSinceEpoch -
+      (DateTime(2022, 3, 5, 23, 00).millisecondsSinceEpoch -
               DateTime.now().millisecondsSinceEpoch) ~/
           1000;
 

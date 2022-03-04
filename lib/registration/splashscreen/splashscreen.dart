@@ -6,7 +6,8 @@ import 'package:swiftvote/registration/voter/voterregistration.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  final int? cstate;
+  const SplashScreen({this.cstate, Key? key}) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -42,6 +43,9 @@ class _SplashScreenState extends State<SplashScreen>
       });
 
     _controller.forward();
+    if (widget.cstate == 3) {
+      _controller.value = 9;
+    }
     super.initState();
   }
 

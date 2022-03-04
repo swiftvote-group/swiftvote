@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:swiftvote/registration/admin/adminreg.dart';
+import 'package:swiftvote/registration/splashscreen/splashscreen.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class AboutToLogOutPage extends StatefulWidget {
@@ -155,7 +156,9 @@ class _CenterLogOutState extends State<CenterLogOut> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
-                    builder: (BuildContext context) => const AdminRegPage(),
+                    builder: (BuildContext context) => const SplashScreen(
+                      cstate: 3,
+                    ),
                   ),
                 );
               },

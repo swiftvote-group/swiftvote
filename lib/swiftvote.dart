@@ -1,5 +1,7 @@
 // This is a static class that contains constants and the likes.
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'dart:async';
@@ -16,6 +18,19 @@ class SwiftVote {
   static const ssbuttonColor = Color(0XFFCBDBFF);
 
   //For other screens put them below here
+
+  static Widget adminPageText(String text) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(text,
+            style: const TextStyle(
+              fontSize: 18,
+            )),
+      ),
+    );
+  }
 
   //Buttons
   static ButtonStyle defButtonStyle({Color color = primaryColor}) {
@@ -166,6 +181,48 @@ class SwiftVote {
         "General Electoral Vote",
         style: TextStyle(
             fontFamily: 'NotoSans', color: SwiftVote.textColor, fontSize: 13),
+      ),
+    );
+  }
+
+  static double? getBarWidth(int tvote, bool isV) {
+    double? h;
+    if (tvote >= 8) {
+      h = null;
+    } else if (tvote >= 6) {
+      h = 16;
+    } else if (tvote >= 4) {
+      h = 32;
+    } else if (tvote >= 2) {
+      h = 64;
+    }
+    return isV ? h : (h == null ? null : h / 2);
+  }
+
+  static Widget candListTile(BuildContext ctx,
+      {String name = "Chijiofor Ebube",
+      double percent = 67,
+      Color pcol = Colors.white}) {
+    return ListTile(
+      horizontalTitleGap: 0,
+      title: Text(name),
+      subtitle: Text(
+        "${percent.round()}% votes",
+        style: const TextStyle(fontFamily: 'NotoSans', fontSize: 12),
+      ),
+      minLeadingWidth: 65,
+      leading: const CircleAvatar(
+        child: FlutterLogo(),
+      ),
+      trailing: SizedBox(
+        width: MediaQuery.of(ctx).size.width / 3,
+        child: LinearProgressIndicator(
+          value: percent / 100,
+          backgroundColor: Color(0xFFD8E2E2),
+          color: pcol == Colors.white
+              ? Colors.accents[Random().nextInt(Colors.accents.length - 1)]
+              : pcol,
+        ),
       ),
     );
   }
@@ -496,6 +553,65 @@ class CompletedWidget extends StatelessWidget {
             text: " Completed",
             style: TextStyle(color: Colors.white, fontSize: 16))
       ])),
+    );
+  }
+}
+
+class AdminPosChange extends Notification {
+  String posTitle = "SUG President";
+  AdminPosChange(this.posTitle);
+}
+
+class TimerWidget extends StatefulWidget {
+  const TimerWidget({Key? key}) : super(key: key);
+
+  @override
+  _TimerWidgetState createState() => _TimerWidgetState();
+}
+
+class _TimerWidgetState extends State<TimerWidget> {
+  final int timerMaxSeconds =
+      (DateTime(2022, 3, 5, 23, 00).millisecondsSinceEpoch -
+              DateTime.now().millisecondsSinceEpoch) ~/
+          1000;
+
+  final interval = const Duration(seconds: 1);
+
+  int currentSeconds = 0;
+
+  String get secText =>
+      ((timerMaxSeconds - currentSeconds) % 60).toString().padLeft(2, '0');
+
+  String get minText => ((timerMaxSeconds - currentSeconds) ~/ 60 % 60)
+      .toString()
+      .padLeft(2, '0');
+
+  String get hourText =>
+      ((timerMaxSeconds - currentSeconds) ~/ 3600).toString().padLeft(2, '0');
+
+  @override
+  void initState() {
+    dynamic duration = interval;
+    Timer.periodic(duration, (timer) {
+      if (mounted) {
+        setState(() {
+          //print(timer.tick);
+          currentSeconds = timer.tick;
+          if (timer.tick >= timerMaxSeconds) timer.cancel();
+        });
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "$hourText:$minText:$secText",
+      style: TextStyle(
+        fontSize: 15,
+        color: SwiftVote.textColor.withOpacity(0.5),
+      ),
     );
   }
 }

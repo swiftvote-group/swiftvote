@@ -32,15 +32,6 @@ class _VoteLinkPageState extends State<VoteLinkPage> {
                 const SizedBox(
                   height: 8,
                 ),
-                SwiftVote.signinField(
-                    Icons.link_outlined, "geunn//1yl-27b7-4/T/.swift", w),
-                const SizedBox(
-                  height: 8,
-                ),
-                SwiftVote.signinField(Icons.vpn_key_outlined, "Password", w),
-                const SizedBox(
-                  height: 8,
-                ),
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
@@ -51,40 +42,27 @@ class _VoteLinkPageState extends State<VoteLinkPage> {
                     ),
                   ),
                 ),
+                SwiftVote.signinField(
+                    Icons.link_outlined, "geunn//1yl-27b7-4/T/.swift", w),
+                const SizedBox(
+                  height: 8,
+                ),
+                SwiftVote.signinField(Icons.vpn_key_outlined, "Password", w),
+                const SizedBox(
+                  height: 8,
+                ),
                 const SizedBox(
                   height: 16,
                 ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text.rich(TextSpan(children: [
-                      WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: Icon(Icons.warning_amber_rounded,
-                              color: SwiftVote.textColor)),
-                      TextSpan(
-                          text: "  Report Issue",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'NotoSans',
-                            color: SwiftVote.textColor,
-                            fontSize: 16,
-                          ))
-                    ])),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              side:
-                                  const BorderSide(color: SwiftVote.textColor),
-                              borderRadius: BorderRadius.circular(16))),
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 24)),
-                    ),
-                  ),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Report Issue",
+                      style: TextStyle(
+                        fontFamily: 'NotoSans',
+                        color: SwiftVote.primaryColor,
+                        decoration: TextDecoration.underline,
+                        fontSize: 12,
+                      )),
                 ),
                 const Spacer(),
                 SwiftVote.defButton(context, const LoadingPage(), "Enter"),
