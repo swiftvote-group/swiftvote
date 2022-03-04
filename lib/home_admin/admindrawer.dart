@@ -12,15 +12,7 @@ class AdminDrawer extends StatefulWidget {
 
 class _AdminDrawerState extends State<AdminDrawer> {
   int curState = 0;
-  List<String> pos = [
-    "SUG President",
-    "Vice President",
-    "Senate",
-    "DOS",
-    "Governor",
-    "Provost",
-    "Financial Secretary",
-  ];
+  List<String> pos = DummyData.electionPos;
 
   @override
   void initState() {

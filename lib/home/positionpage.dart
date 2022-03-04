@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:swiftvote/home/profilepage.dart';
 import 'package:swiftvote/home/voting/voting.dart';
+import 'package:swiftvote/models/shortmodels.dart';
 import 'package:swiftvote/registration/abouttologout.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class PositionPage extends StatelessWidget {
-  const PositionPage({Key? key}) : super(key: key);
+  final String vc;
+  final CandData cd = DummyData().cd;
+  PositionPage(this.vc, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +23,14 @@ class PositionPage extends StatelessWidget {
               Navigator.of(context).pop();
             },
             icon: const Icon(Icons.arrow_back_rounded)),
-        title: const Text("SUG", style: TextStyle(fontSize: 20)),
+        title: Text(vc, style: TextStyle(fontSize: 20)),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
         child: SingleChildScrollView(
           child: Column(
-            children: List.generate(7, (index) => const CandidateCard()),
+            children: List.generate(cd.allCand!.length,
+                (index) => CandidateCard(vc, cd.allCand![index].candName)),
           ),
         ),
       ),
@@ -35,7 +39,8 @@ class PositionPage extends StatelessWidget {
 }
 
 class CandidateCard extends StatelessWidget {
-  const CandidateCard({Key? key}) : super(key: key);
+  final String vc, cdf;
+  const CandidateCard(this.vc, this.cdf, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +61,12 @@ class CandidateCard extends StatelessWidget {
               size: 100,
             ),
           ),
-          const Text(
-            "Jerry Dike",
+          Text(
+            cdf,
             style: TextStyle(color: Colors.black, fontSize: 16),
           ),
-          const Text(
-            "SUG President",
+          Text(
+            vc,
             style: TextStyle(
                 color: Colors.black, fontSize: 14, fontFamily: 'NotoSans'),
           ),

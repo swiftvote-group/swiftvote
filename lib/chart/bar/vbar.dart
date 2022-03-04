@@ -15,7 +15,7 @@ class VBar extends StatefulWidget {
 }
 
 class VBarState extends State<VBar> {
-  final Color barBackgroundColor = const Color(0xff72d8bf);
+  final Color barBackgroundColor = const Color(0xFFF0F1F1);
   final Duration animDuration = const Duration(milliseconds: 250);
   late int lenCand;
   bool isV = true;
@@ -25,17 +25,17 @@ class VBarState extends State<VBar> {
   @override
   void initState() {
     lenCand = widget.cd.allCand!.length;
-    isV = isV;
+    isV = widget.isVertical;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1.5,
+      aspectRatio: 1.78,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-        color: const Color(0xff81e5cd),
+        color: const Color(0xFFF0F1F1),
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Column(
@@ -169,9 +169,7 @@ class VBarState extends State<VBar> {
                 reservedSize: 28,
                 interval: 1,
                 getTextStyles: (context, value) => const TextStyle(
-                    color: Color(0xff7589a2),
-                    fontFamily: 'NotoSans',
-                    fontSize: 11),
+                    color: Colors.black, fontFamily: 'NotoSans', fontSize: 11),
                 getTitles: (value) {
                   int jtv = getMaxOfVal(
                       ((widget.cd.maxVote / widget.cd.totalVote) * 100)
@@ -188,7 +186,7 @@ class VBarState extends State<VBar> {
         bottomTitles: SideTitles(
           showTitles: true,
           getTextStyles: (context, value) => const TextStyle(
-              color: Colors.white, fontFamily: 'NotoSans', fontSize: 12),
+              color: Colors.black, fontFamily: 'NotoSans', fontSize: 12),
           margin: 16,
           rotateAngle: isV ? 0 : -90,
           getTitles: (double value) {

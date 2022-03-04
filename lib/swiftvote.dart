@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'dart:async';
 
+import 'package:swiftvote/models/shortmodels.dart';
+
 class SwiftVote {
   //General
   static const primaryColor = Color(0XFF003478);
@@ -613,5 +615,43 @@ class _TimerWidgetState extends State<TimerWidget> {
         color: SwiftVote.textColor.withOpacity(0.5),
       ),
     );
+  }
+}
+
+class DummyData {
+  static List<String> cdName = [
+    "Ebube Chinedu",
+    "Francisca John",
+    "Henry Francis",
+    "Anthony Ike",
+    "Ebube John",
+    "Francisca Anthony",
+    "Ike Francis",
+    "Paul Ike",
+    "Clementina Obo",
+    "Owelle Raphael"
+  ];
+
+  static List<String> electionPos = [
+    "SUG President",
+    "Vice President",
+    "Senate",
+    "DOS",
+    "Governor",
+    "Provost",
+    "Financial Secretary",
+  ];
+
+  int tVote = 0;
+  late CandData cd;
+
+  DummyData() {
+    List<Candidate> aCands = List.generate(Random().nextInt(8) + 2, (index) {
+      int a = Random().nextInt(20);
+      tVote += a;
+      return Candidate(
+          candName: cdName[index], candPosition: "SUG", voteCount: a);
+    });
+    cd = CandData(totalVote: tVote, allCand: aCands);
   }
 }

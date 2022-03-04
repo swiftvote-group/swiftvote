@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:swiftvote/chart/bar/vbar.dart';
+import 'package:swiftvote/chart/line/mline.dart';
 import 'package:swiftvote/home/poll/gamification.dart';
+import 'package:swiftvote/models/shortmodels.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class PollPage extends StatefulWidget {
@@ -13,6 +17,9 @@ class PollPage extends StatefulWidget {
 }
 
 class _PollPageState extends State<PollPage> {
+  CandData cd = DummyData().cd;
+  List<String> pos = DummyData.electionPos;
+
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -29,7 +36,8 @@ class _PollPageState extends State<PollPage> {
           Expanded(
             child: SingleChildScrollView(
               child: Column(
-                  children: List.generate(3, (index) => const PollPosInfo())),
+                  children: List.generate(
+                      pos.length, (index) => PollPosInfo(cd, pos[index]))),
             ),
           ),
         ],
@@ -127,7 +135,7 @@ Widget timerCard(String data) {
   );
 }
 
-Widget pollUser() {
+Widget pollUser(Candidate cd, int tv, String pos) {
   return Builder(builder: (context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -137,7 +145,7 @@ Widget pollUser() {
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(),
+            border: Border.all(color: cd.ccol!, width: 2),
           ),
           child: CircleAvatar(
             radius: (MediaQuery.of(context).size.width / 5) - 8,
@@ -149,15 +157,15 @@ Widget pollUser() {
         const SizedBox(
           height: 4,
         ),
-        const Text(
-          "Jerry Dike",
+        Text(
+          cd.candName,
           style: TextStyle(color: Colors.black, fontSize: 16),
         ),
         const SizedBox(
           height: 4,
         ),
-        const Text(
-          "SUG President",
+        Text(
+          pos,
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontFamily: 'NotoSans'),
         ),
@@ -170,8 +178,8 @@ Widget pollUser() {
             borderRadius: BorderRadius.circular(4),
             color: SwiftVote.primaryColor,
           ),
-          child: const Text(
-            "30,057 votes     74%",
+          child: Text(
+            "${cd.voteCount} votes     ${((cd.voteCount / tv) * 100).round()}%",
             style: TextStyle(
                 color: Colors.white, fontFamily: 'NotoSans', fontSize: 12),
           ),
@@ -182,7 +190,9 @@ Widget pollUser() {
 }
 
 class PollPosInfo extends StatefulWidget {
-  const PollPosInfo({Key? key}) : super(key: key);
+  final String pos;
+  final CandData cd;
+  const PollPosInfo(this.cd, this.pos, {Key? key}) : super(key: key);
 
   @override
   _PollPosInfoState createState() => _PollPosInfoState();
@@ -191,6 +201,13 @@ class PollPosInfo extends StatefulWidget {
 class _PollPosInfoState extends State<PollPosInfo> {
   @override
   Widget build(BuildContext context) {
+    List<Widget> charts = [
+      VBar(cd: widget.cd),
+      VBar(
+        cd: widget.cd,
+        isVertical: false,
+      ),
+    ];
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Column(
@@ -201,7 +218,7 @@ class _PollPosInfoState extends State<PollPosInfo> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Text(
-                  "SUG Polling",
+                  "${widget.pos} Polling",
                   style: TextStyle(fontSize: 16),
                 ),
               )),
@@ -212,13 +229,28 @@ class _PollPosInfoState extends State<PollPosInfo> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: List.generate(
-                  5,
+                  widget.cd.allCand!.length,
                   (index) => Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: pollUser(),
+                        child: pollUser(widget.cd.allCand![index],
+                            widget.cd.totalVote, widget.pos),
                       )),
             ),
-          )
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          CarouselSlider.builder(
+              itemCount: charts.length,
+              itemBuilder: (BuildContext ctx, int i, int j) {
+                return charts[i];
+              },
+              options: CarouselOptions(
+                aspectRatio: 1.7,
+                enlargeCenterPage: true,
+                viewportFraction: 1,
+                enlargeStrategy: CenterPageEnlargeStrategy.scale,
+              )),
         ],
       ),
     );

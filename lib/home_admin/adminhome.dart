@@ -26,37 +26,10 @@ class _AdminHomePageState extends State<AdminHomePage> {
   };
 
   //dummy data
-  static List<String> cdName = [
-    "Ebube Chinedu",
-    "Francisca John",
-    "Henry Francis",
-    "Anthony Ike",
-    "Ebube John",
-    "Francisca Anthony",
-    "Ike Francis",
-    "Paul Ike",
-    "Clementina Obo",
-    "Owelle Raphael"
-  ];
-
-  List<Candidate> aCands = [];
-  int tVote = 0;
-
-  late CandData cd;
-
-  void buildCandidates() {
-    aCands = List.generate(Random().nextInt(8) + 2, (index) {
-      int a = Random().nextInt(20);
-      tVote += a;
-      return Candidate(
-          candName: cdName[index], candPosition: "SUG", voteCount: a);
-    });
-  }
+  CandData cd = DummyData().cd;
 
   @override
   void initState() {
-    buildCandidates();
-    cd = CandData(totalVote: tVote, allCand: aCands);
     screens = [
       AdminCandActivity(cd),
       AdminVoteActivity(cd: cd),
@@ -103,7 +76,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
                     onPressed: () {
                       showSearch(
                           context: context,
-                          delegate: CandCSD(allCand: cd.allCand, tVote: tVote));
+                          delegate: CandCSD(
+                              allCand: cd.allCand, tVote: cd.totalVote));
                     },
                     icon: const Icon(
                       Icons.search,

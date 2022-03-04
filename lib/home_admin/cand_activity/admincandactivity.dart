@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:swiftvote/chart/bar/vbar.dart';
+import 'package:swiftvote/chart/line/mline.dart';
 import 'package:swiftvote/home_admin/adminhomeheader.dart';
 import 'package:swiftvote/models/shortmodels.dart';
 import 'package:swiftvote/swiftvote.dart';
@@ -30,6 +32,14 @@ class _AdminCandActivityState extends State<AdminCandActivity> {
     List<Candidate> topCand = [];
     topCand.addAll(widget.cd.allCand!);
     topCand.sort((a, b) => b.voteCount.compareTo(a.voteCount));
+    List<Widget> charts = [
+      VBar(cd: widget.cd),
+      VBar(
+        cd: widget.cd,
+        isVertical: false,
+      ),
+      MLine(),
+    ];
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 8.0),
@@ -41,10 +51,24 @@ class _AdminCandActivityState extends State<AdminCandActivity> {
             const SizedBox(
               height: 8,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: VBar(cd: widget.cd),
-            ),
+            CarouselSlider.builder(
+                itemCount: 3,
+                itemBuilder: (BuildContext ctx, int i, int j) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: charts[i],
+                  );
+                },
+                options: CarouselOptions(
+                  aspectRatio: 1.7,
+                  enlargeCenterPage: true,
+                  viewportFraction: 1,
+                  enlargeStrategy: CenterPageEnlargeStrategy.scale,
+                )),
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: VBar(cd: widget.cd),
+            // ),
             // SingleChildScrollView(
             //   scrollDirection: Axis.horizontal,
             //   child: Row(

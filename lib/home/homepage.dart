@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<String> dum = DummyData.electionPos;
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -74,7 +75,8 @@ class _HomePageState extends State<HomePage> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
-                children: List.generate(20, (index) => const PositionCard()),
+                children: List.generate(
+                    dum.length, (index) => PositionCard(dum[index])),
               ),
             ),
           ],
@@ -85,7 +87,8 @@ class _HomePageState extends State<HomePage> {
 }
 
 class PositionCard extends StatelessWidget {
-  const PositionCard({Key? key}) : super(key: key);
+  final String vc;
+  const PositionCard(this.vc, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +97,7 @@ class PositionCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (BuildContext context) => const PositionPage(),
+            builder: (BuildContext context) => PositionPage(vc),
           ),
         );
       },
@@ -108,11 +111,11 @@ class PositionCard extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            const Positioned(
+            Positioned(
                 left: 0,
                 right: 0,
                 child: Text(
-                  "SUG President",
+                  vc,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: SwiftVote.primaryColor, fontSize: 16),
                 )),
