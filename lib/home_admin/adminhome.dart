@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:swiftvote/home_admin/admindrawer.dart';
 import 'package:swiftvote/home_admin/cand_activity/admincandactivity.dart';
 import 'package:swiftvote/home_admin/profile/adminprofile.dart';
@@ -26,10 +27,11 @@ class _AdminHomePageState extends State<AdminHomePage> {
   };
 
   //dummy data
-  CandData cd = DummyData().cd;
+  late CandData cd;
 
   @override
   void initState() {
+    cd = DummyData().cd;
     screens = [
       AdminCandActivity(cd),
       AdminVoteActivity(cd: cd),

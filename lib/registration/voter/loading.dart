@@ -106,28 +106,12 @@ class _LoadingPageState extends State<LoadingPage>
           style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         const Spacer(),
-        TextButton(
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute<void>(
-                builder: (BuildContext context) =>
-                    const VoterRegistrationPage(),
-              ),
-            );
-          },
-          child: const Text(
-            "Awesome",
-            style: TextStyle(color: SwiftVote.primaryColor, fontSize: 16),
-          ),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16))),
-            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                const EdgeInsets.symmetric(vertical: 16, horizontal: 64)),
-          ),
+        SwiftVote.defButton(
+          context,
+          const VoterRegistrationPage(),
+          "Awesome",
+          isWide: true,
+          bcolor: Colors.white,
         ),
         const SizedBox(
           height: 32,

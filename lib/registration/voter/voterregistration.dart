@@ -51,7 +51,7 @@ class _VoterRegistrationPageState extends State<VoterRegistrationPage> {
               children: [
                 Expanded(child: screens[_curScreen]),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 64),
+                  padding: const EdgeInsets.only(bottom: 8),
                   child: TextButton(
                     onPressed: () {
                       setState(() {
@@ -72,6 +72,8 @@ class _VoterRegistrationPageState extends State<VoterRegistrationPage> {
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all<Size>(
+                          const Size.fromHeight(24)),
                       backgroundColor: MaterialStateProperty.all<Color>(
                           SwiftVote.primaryColor),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(

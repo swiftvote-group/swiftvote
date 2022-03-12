@@ -116,9 +116,20 @@ class VBarState extends State<VBar> {
     );
   }
 
+  double _candVC(int i) {
+    return widget.cd.allCand![i].voteCount.toDouble();
+  }
+
+  double _candVCP(int i) {
+    return (widget.cd.allCand![i].voteCount / widget.cd.totalVote) * 100;
+  }
+
+  double candY(int i) {
+    return isV ? _candVC(i) : _candVCP(i);
+  }
+
   List<BarChartGroupData> showingGroups() => List.generate(lenCand, (i) {
-        return makeGroupData(i, widget.cd.allCand![i].voteCount.toDouble(),
-            isTouched: i == touchedIndex);
+        return makeGroupData(i, candY(i), isTouched: i == touchedIndex);
       });
 
   BarChartData mainBarData() {
@@ -127,12 +138,17 @@ class VBarState extends State<VBar> {
         touchTooltipData: BarTouchTooltipData(
             tooltipBgColor: Colors.blueGrey,
             rotateAngle: isV ? 0 : -90,
+            tooltipPadding: EdgeInsets.all(4),
+            fitInsideHorizontally: true,
+            fitInsideVertically: true,
+            tooltipMargin: 4,
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
               return BarTooltipItem(
                 widget.cd.allCand![group.x].candName + '\n',
                 const TextStyle(
                   color: Colors.white,
                   fontFamily: 'NotoSans',
+                  fontSize: 10,
                 ),
                 children: <TextSpan>[
                   TextSpan(
@@ -141,6 +157,7 @@ class VBarState extends State<VBar> {
                         : "${(rod.y - 1).toInt()}%",
                     style: const TextStyle(
                       color: Colors.yellow,
+                      fontSize: 10,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

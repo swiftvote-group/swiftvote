@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:swiftvote/swiftvote.dart';
 
@@ -32,8 +33,9 @@ class AdminHeaderPage extends StatelessWidget {
       ),
       child: Row(
         children: [
-          FlutterLogo(
-            size: h - 32,
+          SvgPicture.asset(
+            "assets/images/defpic.svg",
+            height: h - 32,
           ),
           const SizedBox(
             height: 4,

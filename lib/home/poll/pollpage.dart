@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:swiftvote/chart/bar/vbar.dart';
 import 'package:swiftvote/chart/line/mline.dart';
 import 'package:swiftvote/home/poll/gamification.dart';
@@ -10,15 +11,22 @@ import 'package:swiftvote/models/shortmodels.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class PollPage extends StatefulWidget {
-  const PollPage({Key? key}) : super(key: key);
+  final CandData cd;
+  const PollPage({required this.cd, Key? key}) : super(key: key);
 
   @override
   _PollPageState createState() => _PollPageState();
 }
 
 class _PollPageState extends State<PollPage> {
-  CandData cd = DummyData().cd;
+  late CandData cd;
   List<String> pos = DummyData.electionPos;
+
+  @override
+  void initState() {
+    cd = widget.cd;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +63,7 @@ class PollHeader extends StatefulWidget {
 
 class _PollHeaderState extends State<PollHeader> {
   final int timerMaxSeconds =
-      (DateTime(2022, 3, 5, 23, 00).millisecondsSinceEpoch -
+      (DateTime(2022, 4, 1, 23, 00).millisecondsSinceEpoch -
               DateTime.now().millisecondsSinceEpoch) ~/
           1000;
 
@@ -149,8 +157,9 @@ Widget pollUser(Candidate cd, int tv, String pos) {
           ),
           child: CircleAvatar(
             radius: (MediaQuery.of(context).size.width / 5) - 8,
-            child: const FlutterLogo(
-              size: 100,
+            child: SvgPicture.asset(
+              "assets/images/defpic.svg",
+              height: 100,
             ),
           ),
         ),

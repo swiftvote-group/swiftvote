@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swiftvote/home/profilepage.dart';
 import 'package:swiftvote/home/voting/voting.dart';
 import 'package:swiftvote/models/shortmodels.dart';
-import 'package:swiftvote/registration/abouttologout.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class PositionPage extends StatelessWidget {
   final String vc;
-  final CandData cd = DummyData().cd;
-  PositionPage(this.vc, {Key? key}) : super(key: key);
+  final CandData cd;
+  const PositionPage(this.cd, this.vc, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +57,9 @@ class CandidateCard extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: MediaQuery.of(context).size.height / 12,
-            child: const FlutterLogo(
-              size: 100,
+            child: SvgPicture.asset(
+              "assets/images/defpic.svg",
+              height: 100,
             ),
           ),
           Text(

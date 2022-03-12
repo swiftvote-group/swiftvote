@@ -43,30 +43,8 @@ class AdminLinkSentPage extends StatelessWidget {
                         style: TextStyle(color: Color(0xFFFFC727))),
                   ])),
               const Spacer(),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>
-                          const CandBulkRegPage(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  "Continue",
-                  style: TextStyle(color: SwiftVote.primaryColor, fontSize: 16),
-                ),
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16))),
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 64)),
-                ),
-              ),
+              SwiftVote.defButton(context, const CandBulkRegPage(), "Continue",
+                  isWide: true, bcolor: Colors.white),
               const SizedBox(
                 height: 32,
               ),

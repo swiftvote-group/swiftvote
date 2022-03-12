@@ -2,11 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:swiftvote/home/positionpage.dart';
+import 'package:swiftvote/models/shortmodels.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final CandData cd;
+  const HomePage({required this.cd, Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -76,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
                 children: List.generate(
-                    dum.length, (index) => PositionCard(dum[index])),
+                    dum.length, (index) => PositionCard(widget.cd, dum[index])),
               ),
             ),
           ],
@@ -88,7 +91,8 @@ class _HomePageState extends State<HomePage> {
 
 class PositionCard extends StatelessWidget {
   final String vc;
-  const PositionCard(this.vc, {Key? key}) : super(key: key);
+  final CandData cd;
+  const PositionCard(this.cd, this.vc, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +101,7 @@ class PositionCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (BuildContext context) => PositionPage(vc),
+            builder: (BuildContext context) => PositionPage(cd, vc),
           ),
         );
       },
@@ -106,7 +110,11 @@ class PositionCard extends StatelessWidget {
         height: h / 4,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.accents[Random().nextInt(Colors.accents.length)],
+          border: Border.all(
+              color:
+                  SwiftVote.defRandColors()[DummyData.electionPos.indexOf(vc)],
+              width: 2),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(32),
         ),
         child: Stack(
@@ -114,15 +122,20 @@ class PositionCard extends StatelessWidget {
             Positioned(
                 left: 0,
                 right: 0,
+                bottom: 8,
                 child: Text(
                   vc,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: SwiftVote.primaryColor, fontSize: 16),
+                  style: const TextStyle(
+                      color: SwiftVote.primaryColor, fontSize: 16),
                 )),
             Positioned(
-              bottom: 0,
+              left: 0,
               right: 0,
-              child: FlutterLogo(size: 0.15 * h),
+              child: SvgPicture.asset(
+                "assets/images/defpic.svg",
+                height: 0.15 * h,
+              ),
             )
           ],
         ),

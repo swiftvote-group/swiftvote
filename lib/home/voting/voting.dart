@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swiftvote/home/poll/gamification.dart';
 import 'package:swiftvote/home/voting/fingerprint.dart';
 import 'package:swiftvote/swiftvote.dart';
@@ -124,8 +125,9 @@ class VotingCard extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: MediaQuery.of(context).size.width / 4,
-            child: const FlutterLogo(
-              size: 100,
+            child: SvgPicture.asset(
+              "assets/images/defpic.svg",
+              height: 100,
             ),
           ),
           const Text(

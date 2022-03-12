@@ -3,6 +3,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'dart:async';
 
@@ -54,6 +55,17 @@ class SwiftVote {
       color: color,
       fontSize: 15,
     );
+  }
+
+  static List<Color> defRandColors({int j = 7}) {
+    List<Color> aColors = [];
+    List<Color> defColor = [];
+    aColors.addAll(Colors.accents);
+    aColors.shuffle();
+    for (int i = 0; i < j; i++) {
+      defColor.add(aColors[i]);
+    }
+    return defColor;
   }
 
   static AppBar defAppBar(String title,
@@ -108,7 +120,9 @@ class SwiftVote {
             },
       child: Text(
         data,
-        style: const TextStyle(color: Colors.white, fontSize: 16),
+        style: TextStyle(
+            color: bcolor == primaryColor ? Colors.white : primaryColor,
+            fontSize: 16),
       ),
       style: ButtonStyle(
         minimumSize: MaterialStateProperty.all<Size?>(
@@ -173,10 +187,13 @@ class SwiftVote {
   }
 
   static Widget uniHeader() {
-    return const ListTile(
+    return ListTile(
       leading: CircleAvatar(
         radius: 28,
-        child: FlutterLogo(),
+        child: SvgPicture.asset(
+          "assets/images/defpic.svg",
+          height: 32,
+        ),
       ),
       title: Text("University of Nigeria,Nsukka"),
       subtitle: Text(
@@ -213,8 +230,12 @@ class SwiftVote {
         style: const TextStyle(fontFamily: 'NotoSans', fontSize: 12),
       ),
       minLeadingWidth: 65,
-      leading: const CircleAvatar(
-        child: FlutterLogo(),
+      leading: CircleAvatar(
+        radius: 28,
+        child: SvgPicture.asset(
+          "assets/images/defpic.svg",
+          height: 32,
+        ),
       ),
       trailing: SizedBox(
         width: MediaQuery.of(ctx).size.width / 3,
@@ -328,7 +349,9 @@ class SwiftVote {
             percent: percent / 100,
             center: CircleAvatar(
               radius: w * 0.3,
-              child: const FlutterLogo(),
+              child: SvgPicture.asset(
+                "assets/images/defpic.svg",
+              ),
             ),
             progressColor: color,
             backgroundColor: const Color(0xFFDBDBDB),
@@ -573,7 +596,7 @@ class TimerWidget extends StatefulWidget {
 
 class _TimerWidgetState extends State<TimerWidget> {
   final int timerMaxSeconds =
-      (DateTime(2022, 3, 5, 23, 00).millisecondsSinceEpoch -
+      (DateTime(2022, 4, 1, 23, 00).millisecondsSinceEpoch -
               DateTime.now().millisecondsSinceEpoch) ~/
           1000;
 

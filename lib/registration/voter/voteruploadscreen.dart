@@ -29,7 +29,7 @@ class _VoterUploadScreenState extends State<VoterUploadScreen> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
-            height: MediaQuery.of(context).size.width,
+            height: (MediaQuery.of(context).size.height - 56) / 2,
             width: MediaQuery.of(context).size.width,
             child: Card(
               elevation: 4,
@@ -40,7 +40,7 @@ class _VoterUploadScreenState extends State<VoterUploadScreen> {
               child: Center(
                 child: Container(
                   margin: const EdgeInsets.all(16.0),
-                  height: (MediaQuery.of(context).size.width),
+                  height: (MediaQuery.of(context).size.height - 56) / 2,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: Colors.transparent,

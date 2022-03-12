@@ -116,8 +116,11 @@ Widget positionOwner() {
                   ),
                 );
               },
-              child: FlutterLogo(
-                size: h * 0.6,
+              child: Center(
+                child: SvgPicture.asset(
+                  "assets/images/defpic.svg",
+                  height: h * 0.6,
+                ),
               ),
             ),
             Text(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swiftvote/home/poll/gamification.dart';
 import 'package:swiftvote/home/voting/voting.dart';
 import 'package:swiftvote/swiftvote.dart';
@@ -35,11 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         bottomLeft: Radius.circular(16),
                         bottomRight: Radius.circular(16))),
               )),
-          Positioned(
-              top: (MediaQuery.of(context).size.height / 6) - 56,
-              left: 0,
-              right: 0,
-              child: profHeader()),
+          Positioned(top: 16, left: 0, right: 0, child: profHeader()),
           Positioned(
               bottom: 0,
               left: 0,
@@ -53,21 +50,23 @@ class _ProfilePageState extends State<ProfilePage> {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(16),
                         topRight: Radius.circular(16))),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      "Manifesto\n",
-                      style:
-                          TextStyle(color: SwiftVote.textColor, fontSize: 16),
-                    ),
-                    Text(
-                        "I am Jerry Dike, from the department of electronic engineering. I am an advocate of progress and unity. I am a voice of the voiceless and the mouth of the mouthless, the speech of the speechless and finally, the talk of the talkless.\n\nVote for me as I contest for the SUG position. I seek to develop some electronic stuff here in this university and make this university the best best with the best electronic gadgetries.  Michael enters inside and sees Alex and his student in Melissa’s office. Alex and Michael greet very well and Alex tells him that Melissa contacted him and showed him his research.\n\nHe is very surprised to see his great and would love to meet in person. Michael tells him that he was waiting for a publication. Alex brings up the idea that he can publish the research in America, but if only his friends commitment would allow him to leave the country.",
-                        style: TextStyle(
-                            fontFamily: 'NotoSans',
-                            fontSize: 14,
-                            color: SwiftVote.textColor)),
-                  ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "Manifesto\n",
+                        style:
+                            TextStyle(color: SwiftVote.textColor, fontSize: 16),
+                      ),
+                      Text(
+                          "I am Jerry Dike, from the department of electronic engineering. I am an advocate of progress and unity. I am a voice of the voiceless and the mouth of the mouthless, the speech of the speechless and finally, the talk of the talkless.\n\nVote for me as I contest for the SUG position. I seek to develop some electronic stuff here in this university and make this university the best best with the best electronic gadgetries.  Michael enters inside and sees Alex and his student in Melissa’s office. Alex and Michael greet very well and Alex tells him that Melissa contacted him and showed him his research.\n\nHe is very surprised to see his great and would love to meet in person. Michael tells him that he was waiting for a publication. Alex brings up the idea that he can publish the research in America, but if only his friends commitment would allow him to leave the country.",
+                          style: TextStyle(
+                              fontFamily: 'NotoSans',
+                              fontSize: 14,
+                              color: SwiftVote.textColor)),
+                    ],
+                  ),
                 ),
               )),
         ],
@@ -77,7 +76,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget profBio() {
     return Column(
-      mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -125,17 +123,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(8),
                   // image: DecorationImage(image: ())
                 ),
-                child: FlutterLogo(
-                  size: 120,
+                child: SvgPicture.asset(
+                  "assets/images/defpic.svg",
+                  height: 100,
                 ),
               ),
               const SizedBox(
                 width: 4,
               ),
-              Expanded(child: profBio())
+              profBio()
             ],
           ),
-          SizedBox(height: 24),
+          SizedBox(height: 8),
           Row(mainAxisSize: MainAxisSize.max, children: [
             Expanded(
               child: Padding(

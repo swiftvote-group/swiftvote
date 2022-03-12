@@ -53,7 +53,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
     hasOpened = MyPrefs.getDefInt("SPLASH_COUNTER") ?? 0;
     MyPrefs.setDefInt("SPLASH_COUNTER", hasOpened + 1);
   }

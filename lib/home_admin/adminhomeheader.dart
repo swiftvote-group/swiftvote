@@ -104,6 +104,7 @@ class AhItems extends StatelessWidget {
             ah.title,
             style: TextStyle(
               fontFamily: 'NotoSans',
+              fontSize: 12,
               color: SwiftVote.textColor.withOpacity(0.5),
             ),
           )

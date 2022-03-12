@@ -66,6 +66,8 @@ class _FPasswordPageState extends State<FPasswordPage> {
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all<Size>(
+                          const Size.fromHeight(24)),
                       backgroundColor: MaterialStateProperty.all<Color>(
                           SwiftVote.primaryColor),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(

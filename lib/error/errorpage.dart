@@ -57,16 +57,7 @@ class _ErrorPageState extends State<ErrorPage> {
               ep.btn == ""
                   ? SizedBox()
                   : TextButton(
-                      onPressed: () {
-                        setState(() {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (BuildContext context) =>
-                                  const ListingPage(),
-                            ),
-                          );
-                        });
-                      },
+                      onPressed: () {},
                       child: Text(ep.btn,
                           style: const TextStyle(
                               fontFamily: 'NotoSans', color: Colors.white)),

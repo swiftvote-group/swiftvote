@@ -56,16 +56,20 @@ class _VoteLinkPageState extends State<VoteLinkPage> {
                 ),
                 const Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Report Issue",
-                      style: TextStyle(
-                        fontFamily: 'NotoSans',
-                        color: SwiftVote.primaryColor,
-                        decoration: TextDecoration.underline,
-                        fontSize: 12,
-                      )),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 16.0),
+                    child: Text("Report Issue",
+                        style: TextStyle(
+                          fontFamily: 'NotoSans',
+                          color: SwiftVote.primaryColor,
+                          decoration: TextDecoration.underline,
+                          fontSize: 12,
+                        )),
+                  ),
                 ),
                 const Spacer(),
-                SwiftVote.defButton(context, const LoadingPage(), "Enter"),
+                SwiftVote.defButton(context, const LoadingPage(), "Enter",
+                    isWide: true),
                 const Spacer(),
               ],
             ),

@@ -68,7 +68,8 @@ class _AdminRegPageState extends State<AdminRegPage> {
                   ),
                 ),
                 const Spacer(),
-                SwiftVote.defButton(context, const AdminHomePage(), "Enter"),
+                SwiftVote.defButton(context, const AdminHomePage(), "Enter",
+                    isWide: true),
                 const SizedBox(
                   height: 16,
                 ),
@@ -97,12 +98,12 @@ class _AdminRegPageState extends State<AdminRegPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) => const AdminSignUp(),
-                      ),
-                    );
+                    // Navigator.pushReplacement(
+                    //   context,
+                    //   MaterialPageRoute<void>(
+                    //     builder: (BuildContext context) => const AdminSignUp(),
+                    //   ),
+                    // );
                   },
                   child: const Text(
                     "Sign Up",
@@ -110,7 +111,7 @@ class _AdminRegPageState extends State<AdminRegPage> {
                         TextStyle(color: SwiftVote.primaryColor, fontSize: 16),
                   ),
                   style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.all<Size?>(
+                    minimumSize: MaterialStateProperty.all<Size>(
                         const Size.fromHeight(24)),
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.white),

@@ -3,6 +3,7 @@ import 'package:swiftvote/home/homepage.dart';
 import 'package:swiftvote/home/listing/listingscreen.dart';
 import 'package:swiftvote/home/poll/pollpage.dart';
 import 'package:swiftvote/home/user/userpage.dart';
+import 'package:swiftvote/models/shortmodels.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class MainPage extends StatefulWidget {
@@ -14,18 +15,25 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentScreen = 0;
-  List<Widget> screens = [
-    const HomePage(),
-    const ListingPage(),
-    const PollPage(),
-    const UserPage()
-  ];
+  List<Widget> screens = [];
   Map<String, IconData> tabs = {
     "Home": Icons.home_rounded,
     "Listing": Icons.people_alt_rounded,
     "Poll": Icons.equalizer_rounded,
     "Me": Icons.person_rounded,
   };
+
+  @override
+  void initState() {
+    CandData cd = DummyData().cd;
+    screens = [
+      HomePage(cd: cd),
+      const ListingPage(),
+      PollPage(cd: cd),
+      const UserPage()
+    ];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -41,37 +41,36 @@ class _AdminSignUpState extends State<AdminSignUp> {
             child: Column(
               children: [
                 Expanded(child: screens[_curScreen]),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        if (_curScreen == 2) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (BuildContext context) =>
-                                  const AdminLinkSentPage(),
-                            ),
-                          );
-                        } else {
-                          _curScreen++;
-                        }
-                      });
-                    },
-                    child: Text(
-                      btnText[_curScreen],
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          SwiftVote.primaryColor),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16))),
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.symmetric(
-                              vertical: 16, horizontal: 48)),
-                    ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      if (_curScreen == 2) {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                const AdminLinkSentPage(),
+                          ),
+                        );
+                      } else {
+                        _curScreen++;
+                      }
+                    });
+                  },
+                  child: Text(
+                    btnText[_curScreen],
+                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  style: ButtonStyle(
+                    minimumSize: MaterialStateProperty.all<Size>(
+                        const Size.fromHeight(24)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        SwiftVote.primaryColor),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16))),
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        const EdgeInsets.symmetric(
+                            vertical: 16, horizontal: 48)),
                   ),
                 ),
               ],

@@ -14,7 +14,7 @@ class _VoterNextScreenState extends State<VoterNextScreen> {
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.only(top: 64),
+      padding: const EdgeInsets.only(top: 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
