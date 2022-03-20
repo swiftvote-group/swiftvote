@@ -28,7 +28,7 @@ class _MainPageState extends State<MainPage> {
     CandData cd = DummyData().cd;
     screens = [
       HomePage(cd: cd),
-      const ListingPage(),
+      ListingPage(cd),
       PollPage(cd: cd),
       const UserPage()
     ];

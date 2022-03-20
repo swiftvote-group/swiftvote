@@ -28,7 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
               left: 0,
               right: 0,
               child: Container(
-                height: (MediaQuery.of(context).size.height / 3) - 56,
+                height: (MediaQuery.of(context).size.height - 56) / 4,
                 width: double.maxFinite,
                 decoration: BoxDecoration(
                     color: SwiftVote.primaryColor,
@@ -36,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         bottomLeft: Radius.circular(16),
                         bottomRight: Radius.circular(16))),
               )),
-          Positioned(top: 16, left: 0, right: 0, child: profHeader()),
+          Positioned(top: 32, left: 0, right: 0, child: profHeader()),
           Positioned(
               bottom: 0,
               left: 0,

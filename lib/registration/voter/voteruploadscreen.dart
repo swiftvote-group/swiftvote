@@ -1,16 +1,44 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:swiftvote/models/shortmodels.dart';
 
 class VoterUploadScreen extends StatefulWidget {
   final bool isFace;
-  const VoterUploadScreen(this.isFace, {Key? key}) : super(key: key);
+  final UserImages _userImages;
+  const VoterUploadScreen(this.isFace, this._userImages, {Key? key})
+      : super(key: key);
 
   @override
   _VoterUploadScreenState createState() => _VoterUploadScreenState();
 }
 
 class _VoterUploadScreenState extends State<VoterUploadScreen> {
+  final ImagePicker _picker = ImagePicker();
+  XFile? galleryImage;
+  XFile? cameraImage;
+  File? finalImage;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  File? getFinalImage() {
+    return widget.isFace
+        ? widget._userImages.faceImage
+        : widget._userImages.cardImage;
+  }
+
   @override
   Widget build(BuildContext context) {
+    double h = MediaQuery.of(context).size.height;
+    double w = MediaQuery.of(context).size.width;
+
+    double sH = widget.isFace ? 512 : 321.488;
+    double sW = 512;
     return Column(
       children: [
         Padding(
@@ -29,8 +57,8 @@ class _VoterUploadScreenState extends State<VoterUploadScreen> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
-            height: (MediaQuery.of(context).size.height - 56) / 2,
-            width: MediaQuery.of(context).size.width,
+            height: widget.isFace ? (h - 56) / 2 : (w - 32) * 0.6279,
+            width: w - 32,
             child: Card(
               elevation: 4,
               color: const Color(0xFF1E1D1D),
@@ -40,10 +68,14 @@ class _VoterUploadScreenState extends State<VoterUploadScreen> {
               child: Center(
                 child: Container(
                   margin: const EdgeInsets.all(16.0),
-                  height: (MediaQuery.of(context).size.height - 56) / 2,
-                  width: MediaQuery.of(context).size.width,
+                  height: widget.isFace ? (h - 56) / 2 : (w - 32) * 0.6279,
+                  width: w - 64,
                   decoration: BoxDecoration(
                     color: Colors.transparent,
+                    image: getFinalImage() == null
+                        ? null
+                        : DecorationImage(
+                            image: FileImage(finalImage!), fit: BoxFit.contain),
                     border:
                         Border.all(width: 2, color: const Color(0xFF3E3B3B)),
                   ),
@@ -70,69 +102,124 @@ class _VoterUploadScreenState extends State<VoterUploadScreen> {
         const SizedBox(
           height: 32,
         ),
-        widget.isFace
-            ? const SizedBox()
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text.rich(TextSpan(children: [
-                      WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: Icon(
-                            Icons.file_upload_outlined,
-                            color: Color(0xFF43484B),
-                          )),
-                      TextSpan(
-                          text: "    Upload",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Color(0xFF43484B)))
-                    ])),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              side: const BorderSide(color: Color(0xFF43484B)),
-                              borderRadius: BorderRadius.circular(16))),
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 24)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            TextButton(
+              onPressed: () async {
+                try {
+                  galleryImage =
+                      await _picker.pickImage(source: ImageSource.gallery);
+                  File? file = await ImageCropper().cropImage(
+                    sourcePath: galleryImage!.path,
+                    aspectRatio: CropAspectRatio(ratioX: sW, ratioY: sH),
+                    compressQuality: 100,
+                    maxHeight: sH.round(),
+                    maxWidth: sW.round(),
+                    compressFormat: ImageCompressFormat.jpg,
+                    iosUiSettings: const IOSUiSettings(
+                      title: "Adjust Size",
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text.rich(TextSpan(children: [
-                      WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: Icon(
-                            Icons.add_a_photo_outlined,
-                            color: Color(0xFF43484B),
-                          )),
-                      TextSpan(
-                          text: "   Capture",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Color(0xFF43484B)))
-                    ])),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              side: const BorderSide(color: Color(0xFF43484B)),
-                              borderRadius: BorderRadius.circular(16))),
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 24)),
+                    androidUiSettings: const AndroidUiSettings(
+                      toolbarColor: Colors.white,
+                      toolbarTitle: "Adjust Size",
                     ),
-                  ),
-                ],
-              )
+                  );
+                  setState(() {
+                    if (widget.isFace) {
+                      widget._userImages.faceImage = file;
+                    } else {
+                      widget._userImages.cardImage = file;
+                    }
+                    finalImage = file;
+                  });
+                } catch (e) {
+                  print(e);
+                }
+              },
+              child: const Text.rich(TextSpan(children: [
+                WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: Icon(
+                      Icons.file_upload_outlined,
+                      color: Color(0xFF43484B),
+                    )),
+                TextSpan(
+                    text: "    Upload",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Color(0xFF43484B)))
+              ])),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        side: const BorderSide(color: Color(0xFF43484B)),
+                        borderRadius: BorderRadius.circular(16))),
+                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24)),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                try {
+                  cameraImage =
+                      await _picker.pickImage(source: ImageSource.camera);
+                  File? file = await ImageCropper().cropImage(
+                    sourcePath: cameraImage!.path,
+                    aspectRatio: CropAspectRatio(ratioX: sW, ratioY: sH),
+                    compressQuality: 100,
+                    maxHeight: sH.round(),
+                    maxWidth: sW.round(),
+                    compressFormat: ImageCompressFormat.jpg,
+                    iosUiSettings: const IOSUiSettings(
+                      title: "Adjust Size",
+                    ),
+                    androidUiSettings: const AndroidUiSettings(
+                      toolbarColor: Colors.white,
+                      toolbarTitle: "Adjust Size",
+                    ),
+                  );
+                  setState(() {
+                    if (widget.isFace) {
+                      widget._userImages.faceImage = file;
+                    } else {
+                      widget._userImages.cardImage = file;
+                    }
+                    finalImage = file;
+                    // OnCapturedImage(finalImage!.path);
+                  });
+                } catch (e) {
+                  print(e);
+                }
+              },
+              child: const Text.rich(TextSpan(children: [
+                WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: Icon(
+                      Icons.add_a_photo_outlined,
+                      color: Color(0xFF43484B),
+                    )),
+                TextSpan(
+                    text: "   Capture",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Color(0xFF43484B)))
+              ])),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        side: const BorderSide(color: Color(0xFF43484B)),
+                        borderRadius: BorderRadius.circular(16))),
+                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24)),
+              ),
+            ),
+          ],
+        )
       ],
     );
   }

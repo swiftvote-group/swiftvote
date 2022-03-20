@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:swiftvote/models/shortmodels.dart';
 import 'package:swiftvote/registration/splashscreen/splashscreen.dart';
-import 'package:swiftvote/registration/voter/votelink.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 Future<void> main() async {

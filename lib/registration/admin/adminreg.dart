@@ -14,6 +14,10 @@ class AdminRegPage extends StatefulWidget {
 }
 
 class _AdminRegPageState extends State<AdminRegPage> {
+  final snackBar = const SnackBar(
+    content: Text('Go to the site to Signup'),
+  );
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -98,6 +102,7 @@ class _AdminRegPageState extends State<AdminRegPage> {
                 ),
                 TextButton(
                   onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     // Navigator.pushReplacement(
                     //   context,
                     //   MaterialPageRoute<void>(

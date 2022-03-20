@@ -13,12 +13,20 @@ class FingerprintPage extends StatefulWidget {
 class _FingerprintPageState extends State<FingerprintPage>
     with TickerProviderStateMixin {
   late AnimationController _controller;
+  bool hasFinished = false;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          hasFinished = true;
+        });
+      }
+    });
   }
 
   @override
@@ -57,11 +65,9 @@ class _FingerprintPageState extends State<FingerprintPage>
             const SizedBox(
               height: 32,
             ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton(
+            const Spacer(),
+            !hasFinished
+                ? TextButton(
                     onPressed: () {
                       _controller.reset();
                     },
@@ -91,10 +97,10 @@ class _FingerprintPageState extends State<FingerprintPage>
                               borderRadius: BorderRadius.circular(16))),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                           const EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 24)),
+                              vertical: 16, horizontal: 24)),
                     ),
-                  ),
-                  TextButton(
+                  )
+                : TextButton(
                     onPressed: () {
                       setState(() {
                         Navigator.of(context).push(
@@ -131,12 +137,9 @@ class _FingerprintPageState extends State<FingerprintPage>
                               borderRadius: BorderRadius.circular(16))),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                           const EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 24)),
+                              vertical: 16, horizontal: 24)),
                     ),
                   ),
-                ],
-              ),
-            )
           ],
         ),
       ),

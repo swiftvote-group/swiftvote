@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swiftvote/models/shortmodels.dart';
 import 'package:swiftvote/registration/voter/recording.dart';
 import 'package:swiftvote/registration/voter/voternextscreen.dart';
 import 'package:swiftvote/registration/voter/voterregscreen.dart';
@@ -15,6 +16,7 @@ class VoterRegistrationPage extends StatefulWidget {
 class _VoterRegistrationPageState extends State<VoterRegistrationPage> {
   int _curScreen = 0;
   List<TextEditingController> controllers = [];
+  UserImages userImages = UserImages();
   List<Widget> screens = [];
   List<String> btnText = [
     "Next",
@@ -31,8 +33,8 @@ class _VoterRegistrationPageState extends State<VoterRegistrationPage> {
       VoterRegScreen(controllers.sublist(0, 6)),
       VoterNextScreen(controllers.sublist(6, 8)),
       VerificationScreen(controllers.sublist(8)),
-      VoterUploadScreen(true),
-      VoterUploadScreen(false),
+      VoterUploadScreen(true, userImages),
+      VoterUploadScreen(false, userImages),
     ];
     super.initState();
   }

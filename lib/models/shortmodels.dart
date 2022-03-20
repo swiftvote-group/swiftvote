@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -144,4 +146,11 @@ class HistoryData {
   List<History>? allHistory;
 
   HistoryData({this.allHistory});
+}
+
+class UserImages {
+  File? faceImage;
+  File? cardImage;
+
+  UserImages({this.faceImage, this.cardImage});
 }
