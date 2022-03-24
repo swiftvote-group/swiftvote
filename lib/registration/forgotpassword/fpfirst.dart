@@ -16,7 +16,8 @@ class _FPFirstScreenState extends State<FPFirstScreen> {
     double w = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.only(top: 64),
-      child: SwiftVote.defTextFormField("Email Address", w, widget.controller),
+      child: SwiftVote.defTextFormField("Email Address", w, widget.controller,
+          varl: SWV.email),
     );
   }
 }

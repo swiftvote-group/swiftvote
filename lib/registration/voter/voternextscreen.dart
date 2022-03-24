@@ -20,11 +20,13 @@ class _VoterNextScreenState extends State<VoterNextScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           SwiftVote.defTextFormField(
-              "School Email Address", w, widget.controllers[0]),
+              "School Email Address", w, widget.controllers[0],
+              varl: SWV.email),
           const SizedBox(
             height: 32,
           ),
-          SwiftVote.defTextFormField("Phone Number", w, widget.controllers[1]),
+          SwiftVote.defTextFormField("Phone Number", w, widget.controllers[1],
+              varl: SWV.phone),
           const SizedBox(
             height: 16,
           ),

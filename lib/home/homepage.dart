@@ -17,6 +17,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<String> dum = DummyData.electionPos;
+  List<String> searchDum = [];
+
+  @override
+  void initState() {
+    searchDum.addAll(dum);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -27,38 +35,59 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text.rich(TextSpan(
-                    text: "Hey there !  ",
-                    style: const TextStyle(
-                        fontSize: 18, color: SwiftVote.textColor),
-                    children: [
-                      WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: SvgPicture.asset("assets/images/welcome.svg"))
-                    ])),
-                SizedBox(
-                  width: h / 5,
-                  child: TextFormField(
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(vertical: 4),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(32)),
-                        hintText: "Search for position",
-                        hintStyle: const TextStyle(
-                          color: SwiftVote.textColor,
-                          fontSize: 12,
-                          fontFamily: 'NotoSans',
-                        ),
-                        prefixIconConstraints:
-                            const BoxConstraints(minWidth: 32, minHeight: 32),
-                        prefixIcon: const Icon(Icons.search_rounded)),
-                  ),
-                )
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text.rich(TextSpan(
+                      text: "Hey there !  ",
+                      style: const TextStyle(
+                          fontSize: 18, color: SwiftVote.textColor),
+                      children: [
+                        WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child:
+                                SvgPicture.asset("assets/images/welcome.svg"))
+                      ])),
+                  SizedBox(
+                    width: h / 5,
+                    child: TextFormField(
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontFamily: 'NotoSans'),
+                      onChanged: (val) {
+                        List<String> queryDum = [];
+                        for (String c in dum) {
+                          if (c.toLowerCase().contains(val.toLowerCase())) {
+                            queryDum.add(c);
+                          }
+                        }
+                        searchDum.clear();
+                        setState(() {
+                          if (queryDum.isEmpty) {
+                            searchDum.addAll(dum);
+                          } else {
+                            searchDum.addAll(queryDum);
+                          }
+                        });
+                      },
+                      decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(8),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(32)),
+                          hintText: "Search for position",
+                          hintStyle: const TextStyle(
+                            color: SwiftVote.textColor,
+                            fontSize: 12,
+                            fontFamily: 'NotoSans',
+                          ),
+                          prefixIconConstraints:
+                              const BoxConstraints(minWidth: 32, minHeight: 32),
+                          prefixIcon: const Icon(Icons.search_rounded)),
+                    ),
+                  )
+                ],
+              ),
             ),
             const Align(
               alignment: Alignment.centerLeft,
@@ -78,8 +107,8 @@ class _HomePageState extends State<HomePage> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
-                children: List.generate(
-                    dum.length, (index) => PositionCard(widget.cd, dum[index])),
+                children: List.generate(searchDum.length,
+                    (index) => PositionCard(widget.cd, searchDum[index])),
               ),
             ),
           ],

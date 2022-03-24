@@ -9,6 +9,14 @@ import 'dart:async';
 
 import 'package:swiftvote/models/shortmodels.dart';
 
+//enum
+enum SWV {
+  email,
+  phone,
+  text,
+  password,
+}
+
 class SwiftVote {
   //General
   static const primaryColor = Color(0XFF003478);
@@ -103,12 +111,23 @@ class SwiftVote {
     );
   }
 
-  static TextButton defButton(BuildContext context, Widget? screen, String data,
-      {Color bcolor = primaryColor, bool isWide = false}) {
+  static TextButton defButton(
+    BuildContext context,
+    Widget? screen,
+    String data, {
+    Color bcolor = primaryColor,
+    bool isWide = false,
+    bool shdStay = false,
+    Function? func,
+  }) {
     return TextButton(
       onPressed: screen == null
           ? () {
-              Navigator.of(context).pop();
+              if (!shdStay) {
+                Navigator.of(context).pop();
+              } else {
+                func!();
+              }
             }
           : () {
               Navigator.pushReplacement(
@@ -137,26 +156,31 @@ class SwiftVote {
   }
 
   static Widget defTextFormField(
-      String hint, double width, TextEditingController _controller) {
+      String hint, double width, TextEditingController _controller,
+      {SWV varl = SWV.text}) {
     return SizedBox(
       width: width - 32,
       child: TextFormField(
         controller: _controller,
+        keyboardType:
+            varl == SWV.phone ? TextInputType.phone : TextInputType.text,
+        style: const TextStyle(fontSize: 13, fontFamily: 'NotoSans'),
+        validator: (value) => SWValidator(value).validate(varl),
         decoration: InputDecoration(
+            labelText: hint,
             border: OutlineInputBorder(
               borderSide: const BorderSide(color: Color(0xFF7D848D)),
               borderRadius: BorderRadius.circular(8),
             ),
             isDense: true,
-            hintText: hint,
-            hintStyle: const TextStyle(fontSize: 13, fontFamily: 'NotoSans')),
+            labelStyle: const TextStyle(fontSize: 13, fontFamily: 'NotoSans')),
       ),
     );
   }
 
   static Widget defNumberField(
       BuildContext context, TextEditingController _controller,
-      {bool isLast = false}) {
+      {bool isLast = false, bool isFirst = false}) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: TextFormField(
@@ -172,6 +196,10 @@ class SwiftVote {
             isLast
                 ? FocusScope.of(context).unfocus()
                 : FocusScope.of(context).nextFocus();
+          } else if (value.isEmpty) {
+            isFirst
+                ? FocusScope.of(context).unfocus()
+                : FocusScope.of(context).previousFocus();
           }
         },
         decoration: const InputDecoration(
@@ -213,9 +241,22 @@ class SwiftVote {
     } else if (tvote >= 4) {
       h = 32;
     } else if (tvote >= 2) {
-      h = 64;
+      h = 32;
     }
     return isV ? h : (h == null ? null : h / 2);
+  }
+
+  static SnackBar errorBar(String msg, {bool isError = true}) {
+    return SnackBar(
+        content: Text(
+          msg,
+          style: TextStyle(fontFamily: 'SansSerifBldFLF'),
+        ),
+        duration: Duration(seconds: 2),
+        backgroundColor: isError ? Colors.redAccent : Colors.greenAccent,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(8),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)));
   }
 
   static Widget candListTile(BuildContext ctx,
@@ -313,7 +354,9 @@ class SwiftVote {
     );
   }
 
-  static Widget signinField(IconData iconData, String hint, double w) {
+  static Widget signinField(
+      IconData iconData, String hint, double w, TextEditingController cont,
+      {bool isPass = false, SWV varl = SWV.text}) {
     return Card(
       margin: const EdgeInsets.all(8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -321,6 +364,10 @@ class SwiftVote {
       child: SizedBox(
         width: w,
         child: TextFormField(
+          obscureText: isPass,
+          controller: cont,
+          //validator: (value) => SWValidator(value).validate(varl),
+          style: const TextStyle(fontSize: 13, fontFamily: 'NotoSans'),
           decoration: InputDecoration(
             border: const OutlineInputBorder(borderSide: BorderSide.none),
             suffixIcon: Icon(iconData),
@@ -422,26 +469,27 @@ class VerificationScreen extends StatefulWidget {
   const VerificationScreen(this.controllers, {Key? key}) : super(key: key);
 
   @override
-  _VerificationScreenState createState() => _VerificationScreenState();
+  VerificationScreenState createState() => VerificationScreenState();
 }
 
-class _VerificationScreenState extends State<VerificationScreen> {
+class VerificationScreenState extends State<VerificationScreen> {
   final interval = const Duration(seconds: 1);
 
   final int timerMaxSeconds = 900;
 
   int currentSeconds = 0;
+  late Timer mytimer;
 
   String get timerText =>
       '${((timerMaxSeconds - currentSeconds) ~/ 60).toString().padLeft(2, '0')}: ${((timerMaxSeconds - currentSeconds) % 60).toString().padLeft(2, '0')}';
 
   @override
   void initState() {
-    dynamic duration = interval;
-    Timer.periodic(duration, (timer) {
+    mytimer = Timer.periodic(interval, (timer) {
       if (mounted) {
         setState(() {
           //print(timer.tick);
+
           currentSeconds = timer.tick;
           if (timer.tick >= timerMaxSeconds) timer.cancel();
         });
@@ -469,7 +517,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 4,
               children: [
-                SwiftVote.defNumberField(context, widget.controllers[0]),
+                SwiftVote.defNumberField(context, widget.controllers[0],
+                    isFirst: true),
                 const Icon(
                   Icons.remove,
                 ),
@@ -477,7 +526,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 const Icon(Icons.remove),
                 SwiftVote.defNumberField(context, widget.controllers[2]),
                 const Icon(Icons.remove),
-                SwiftVote.defNumberField(context, widget.controllers[3]),
+                SwiftVote.defNumberField(context, widget.controllers[3],
+                    isLast: true),
               ],
             ),
             const SizedBox(
@@ -494,7 +544,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 text:
                     "This code will automatically expire at the countdown of ",
                 style: const TextStyle(
-                    fontSize: 10,
+                    fontSize: 12,
                     color: SwiftVote.textColor,
                     fontFamily: 'NotoSans'),
                 children: [
@@ -506,12 +556,36 @@ class _VerificationScreenState extends State<VerificationScreen> {
             const SizedBox(
               height: 8,
             ),
-            const Text(
-              "Resend ?",
-              style: TextStyle(
-                  fontSize: 10,
-                  fontFamily: 'NotoSans',
-                  color: SwiftVote.primaryColor),
+            GestureDetector(
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(SwiftVote.errorBar(
+                    "Please check your email",
+                    isError: false));
+
+                setState(() {
+                  for (TextEditingController item in widget.controllers) {
+                    item.clear();
+                  }
+                  mytimer.cancel();
+                  mytimer = Timer.periodic(interval, (timer) {
+                    if (mounted) {
+                      setState(() {
+                        //print(timer.tick);
+
+                        currentSeconds = timer.tick;
+                        if (timer.tick >= timerMaxSeconds) timer.cancel();
+                      });
+                    }
+                  });
+                });
+              },
+              child: const Text(
+                "Resend ?",
+                style: TextStyle(
+                    fontSize: 12,
+                    fontFamily: 'NotoSans',
+                    color: SwiftVote.primaryColor),
+              ),
             )
           ],
         ),
@@ -676,5 +750,68 @@ class DummyData {
           candName: cdName[index], candPosition: "SUG", voteCount: a);
     });
     cd = CandData(totalVote: tVote, allCand: aCands);
+  }
+}
+
+class SWValidator {
+  String? value;
+
+  SWValidator(this.value) {
+    value = value?.trim();
+  }
+
+  static bool validList(List<TextEditingController> tecs) {
+    int validCnt = 0;
+    for (TextEditingController cont in tecs) {
+      cont.value.text.isNotEmpty ? validCnt++ : validCnt--;
+    }
+    return validCnt == tecs.length;
+  }
+
+  String? validate(SWV m) {
+    switch (m) {
+      case SWV.text:
+        return valText();
+      case SWV.email:
+        return valEmail();
+      case SWV.phone:
+        return valPhone();
+      case SWV.password:
+        return valPassword();
+      default:
+        return null;
+    }
+  }
+
+  String? valEmail() {
+    if (value != null && value!.contains("@")) {
+      return null;
+    }
+    return "Invalid Email";
+  }
+
+  String? valPhone() {
+    if (value != null &&
+        value!.length == 11 &&
+        (value!.startsWith("08") ||
+            value!.startsWith("07") ||
+            value!.startsWith("09"))) {
+      return null;
+    }
+    return "Invalid Phone Number";
+  }
+
+  String? valText() {
+    if (value != null && value!.isNotEmpty) {
+      return null;
+    }
+    return "Must not be empty";
+  }
+
+  String? valPassword() {
+    if (value != null && value!.length >= 8) {
+      return null;
+    }
+    return "Invalid Password";
   }
 }

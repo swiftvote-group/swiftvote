@@ -19,12 +19,14 @@ class _FPThirdScreenState extends State<FPThirdScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          SwiftVote.defTextFormField("New Password", w, widget.controllers[0]),
+          SwiftVote.defTextFormField("New Password", w, widget.controllers[0],
+              varl: SWV.password),
           const SizedBox(
             height: 32,
           ),
           SwiftVote.defTextFormField(
-              "Confirm Password", w, widget.controllers[1]),
+              "Confirm Password", w, widget.controllers[1],
+              varl: SWV.password),
           const SizedBox(
             height: 16,
           ),

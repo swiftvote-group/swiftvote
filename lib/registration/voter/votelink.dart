@@ -11,6 +11,12 @@ class VoteLinkPage extends StatefulWidget {
 }
 
 class _VoteLinkPageState extends State<VoteLinkPage> {
+  final errorBar = SwiftVote.errorBar("Invalid ID and Password");
+  List<TextEditingController> conts = [
+    TextEditingController(),
+    TextEditingController()
+  ];
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -42,12 +48,14 @@ class _VoteLinkPageState extends State<VoteLinkPage> {
                     ),
                   ),
                 ),
-                SwiftVote.signinField(
-                    Icons.link_outlined, "geunn//1yl-27b7-4/T/.swift", w),
+                SwiftVote.signinField(Icons.link_outlined,
+                    "geunn//1yl-27b7-4/T/.swift", w, conts[0]),
                 const SizedBox(
                   height: 8,
                 ),
-                SwiftVote.signinField(Icons.vpn_key_outlined, "Password", w),
+                SwiftVote.signinField(
+                    Icons.vpn_key_outlined, "Password", w, conts[1],
+                    isPass: true),
                 const SizedBox(
                   height: 8,
                 ),
@@ -68,8 +76,20 @@ class _VoteLinkPageState extends State<VoteLinkPage> {
                   ),
                 ),
                 const Spacer(),
-                SwiftVote.defButton(context, const LoadingPage(), "Enter",
-                    isWide: true),
+                SwiftVote.defButton(context, null, "Enter",
+                    isWide: true, shdStay: true, func: () {
+                  bool isVal = SWValidator.validList(conts);
+                  if (isVal) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => const LoadingPage(),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(errorBar);
+                  }
+                }),
                 const Spacer(),
               ],
             ),

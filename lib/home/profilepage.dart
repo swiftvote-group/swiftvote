@@ -46,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: MediaQuery.of(context).size.height / 2,
                 width: double.maxFinite,
                 decoration: const BoxDecoration(
-                    color: const Color(0xFFE6EAEF),
+                    color: const Color(0xFFE5E5E5),
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(16),
                         topRight: Radius.circular(16))),
@@ -125,11 +125,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 child: SvgPicture.asset(
                   "assets/images/defpic.svg",
-                  height: 100,
+                  height: 120,
                 ),
               ),
               const SizedBox(
-                width: 4,
+                width: 8,
               ),
               profBio()
             ],

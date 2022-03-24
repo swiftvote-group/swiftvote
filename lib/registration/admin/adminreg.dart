@@ -16,7 +16,13 @@ class AdminRegPage extends StatefulWidget {
 class _AdminRegPageState extends State<AdminRegPage> {
   final snackBar = const SnackBar(
     content: Text('Go to the site to Signup'),
+    duration: Duration(seconds: 2),
   );
+  final errorBar = SwiftVote.errorBar("Invalid ID and Password");
+  List<TextEditingController> conts = [
+    TextEditingController(),
+    TextEditingController()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +46,13 @@ class _AdminRegPageState extends State<AdminRegPage> {
                   height: 8,
                 ),
                 SwiftVote.signinField(
-                    Icons.contact_mail_rounded, "Enter Admin ID", w),
+                    Icons.contact_mail_rounded, "Enter Admin ID", w, conts[0]),
                 const SizedBox(
                   height: 8,
                 ),
-                SwiftVote.signinField(Icons.password_rounded, "Password", w),
+                SwiftVote.signinField(
+                    Icons.password_rounded, "Password", w, conts[1],
+                    isPass: true),
                 const SizedBox(
                   height: 8,
                 ),
@@ -72,8 +80,22 @@ class _AdminRegPageState extends State<AdminRegPage> {
                   ),
                 ),
                 const Spacer(),
-                SwiftVote.defButton(context, const AdminHomePage(), "Enter",
-                    isWide: true),
+                SwiftVote.defButton(context, null, "Enter",
+                    isWide: true, shdStay: true, func: () {
+                  bool isVal = SWValidator.validList(conts);
+
+                  if (isVal) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) =>
+                            const AdminHomePage(),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(errorBar);
+                  }
+                }),
                 const SizedBox(
                   height: 16,
                 ),

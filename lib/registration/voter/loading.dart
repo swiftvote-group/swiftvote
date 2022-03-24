@@ -79,24 +79,27 @@ class _LoadingPageState extends State<LoadingPage>
       mainAxisSize: MainAxisSize.max,
       children: [
         const Spacer(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            SizeTransition(
-              sizeFactor:
-                  CurvedAnimation(parent: _controller2, curve: Curves.bounceIn),
-              child: SvgPicture.asset(
-                "assets/images/celebration.svg",
-                height: MediaQuery.of(context).size.height / 7,
+        SizedBox(
+          height: 72,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SizeTransition(
+                sizeFactor: CurvedAnimation(
+                    parent: _controller2, curve: Curves.bounceIn),
+                child: SvgPicture.asset(
+                  "assets/images/celebration.svg",
+                  height: 64,
+                ),
               ),
-            ),
-            SizeTransition(
-              sizeFactor:
-                  CurvedAnimation(parent: _controller2, curve: Curves.bounceIn),
-              child: SvgPicture.asset("assets/images/celebration.svg",
-                  height: MediaQuery.of(context).size.height / 7),
-            ),
-          ],
+              SizeTransition(
+                sizeFactor: CurvedAnimation(
+                    parent: _controller2, curve: Curves.bounceIn),
+                child: SvgPicture.asset("assets/images/celebration.svg",
+                    height: 64),
+              ),
+            ],
+          ),
         ),
         const SizedBox(
           height: 32,

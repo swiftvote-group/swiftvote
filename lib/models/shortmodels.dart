@@ -154,3 +154,49 @@ class UserImages {
 
   UserImages({this.faceImage, this.cardImage});
 }
+
+class Election {
+  String? name, icon, id, url, password, etype, duration, startDate, endDate;
+  int votersCnt, candCnt;
+
+  String get retype {
+    if (etype!.length > 57) {
+      return etype!.substring(0, 57) + "...";
+    }
+    return etype!;
+  }
+
+  Election(
+      {this.name = "University of Nigeria, Nsukka",
+      this.etype = "Medicine & Surgery Departmental Election",
+      this.id,
+      this.icon,
+      this.url,
+      this.password,
+      this.duration,
+      this.startDate,
+      this.endDate = "16th April 2022",
+      this.votersCnt = 0,
+      this.candCnt = 0});
+
+  factory Election.fromJSON(Map<String, dynamic> json) {
+    return Election(
+        name: json["candName"],
+        etype: json["candPosition"],
+        id: json["candImgUrl"],
+        password: json["password"],
+        icon: json["icon"],
+        url: json["voteCount"],
+        votersCnt: json["candImgUrl"],
+        candCnt: json["voteCount"],
+        startDate: json["candImgUrl"],
+        endDate: json["voteCount"],
+        duration: json["candManifesto"]);
+  }
+}
+
+class AdminNotificationModel {
+  String? notifType, notifDesc, notifTime;
+
+  AdminNotificationModel(this.notifType, this.notifDesc, this.notifTime);
+}

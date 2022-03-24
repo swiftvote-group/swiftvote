@@ -26,6 +26,7 @@ class _AdminVoteActivityState extends State<AdminVoteActivity> {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
+    int len = widget.cd!.totalVote;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 8.0),
@@ -89,14 +90,16 @@ class _AdminVoteActivityState extends State<AdminVoteActivity> {
                                     ),
                                   ))),
                       ...List.generate(
-                          50,
+                          len,
                           (i) => TableRow(
                               children: List.generate(
                                   voteHeaders.length,
                                   (j) => Padding(
                                         padding: const EdgeInsets.all(4.0),
                                         child: Text(
-                                          j == 0 ? "${i + 1}" : voteChildren[j],
+                                          j == 0
+                                              ? "${len - i}"
+                                              : voteChildren[j],
                                           style: const TextStyle(
                                               fontFamily: 'NotoSans',
                                               fontSize: 12),

@@ -25,14 +25,15 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
             SwiftVote.defTextFormField("Surname", w / 2, widget.controllers[0]),
             SwiftVote.defTextFormField(
                 "Initials", w / 2, widget.controllers[1]),
-            SwiftVote.defTextFormField(
-                "Phone Number", w, widget.controllers[2]),
+            SwiftVote.defTextFormField("Phone Number", w, widget.controllers[2],
+                varl: SWV.phone),
             SwiftVote.defTextFormField(
                 "School Role", w / 2, widget.controllers[3]),
             SwiftVote.defTextFormField(
                 "School ID Number", w / 2, widget.controllers[4]),
             SwiftVote.defTextFormField(
-                "School Email Address", w, widget.controllers[5]),
+                "School Email Address", w, widget.controllers[5],
+                varl: SWV.phone),
             SwiftVote.dropdownField("Number of admins", w / 2),
             SwiftVote.dropdownField("Type of election", w / 2),
           ],

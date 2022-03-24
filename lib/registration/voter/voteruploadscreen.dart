@@ -177,9 +177,9 @@ class _VoterUploadScreenState extends State<VoterUploadScreen> {
                       title: "Adjust Size",
                     ),
                     androidUiSettings: const AndroidUiSettings(
-                      toolbarColor: Colors.white,
-                      toolbarTitle: "Adjust Size",
-                    ),
+                        toolbarColor: Colors.white,
+                        toolbarTitle: "Adjust Size",
+                        toolbarWidgetColor: Colors.white),
                   );
                   setState(() {
                     if (widget.isFace) {

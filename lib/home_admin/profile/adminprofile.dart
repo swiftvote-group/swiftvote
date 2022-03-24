@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swiftvote/error/errorpage.dart';
+import 'package:swiftvote/home_admin/profile/adminhistory.dart';
+import 'package:swiftvote/home_admin/profile/adminnotification.dart';
 import 'package:swiftvote/home_admin/profile/adminprofileheader.dart';
 import 'package:swiftvote/registration/abouttologout.dart';
 import 'package:swiftvote/swiftvote.dart';
@@ -53,7 +55,14 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute<void>(
-                            builder: (BuildContext context) => ErrorPage(index),
+                            builder: (BuildContext context) {
+                              if (index == 0) {
+                                return AdminHistoryPage();
+                              } else if (index == 1) {
+                                return const AdminNotifPage();
+                              }
+                              return ErrorPage(index);
+                            },
                           ),
                         );
                       },
