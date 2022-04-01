@@ -101,6 +101,11 @@ class VotePositions {
 
 class MyPrefs {
   static SharedPreferences? _prefs;
+  static const String mpAdminID = "admin-id";
+  static const String mpUserID = "user-id";
+  static const String mpElectionID = "election-id";
+  static const String mpIsLoggedIn = "IsLoggedIn";
+  static const String mpUserLogInDuration = "LoginDuration";
 
   static Future init() async => _prefs = await SharedPreferences.getInstance();
 
@@ -110,10 +115,24 @@ class MyPrefs {
 
   static String? getDef(String key) => _prefs!.getString(key);
 
-  static Future setDefInt(String key, int value) async =>
+  static Future<bool> setDefInt(String key, int value) async =>
       await _prefs!.setInt(key, value);
 
   static int? getDefInt(String key) => _prefs!.getInt(key);
+
+  static Future<bool> adminLogin(String adminid) async {
+    setDef(mpAdminID, adminid);
+    return await _prefs!.setBool(mpIsLoggedIn, true);
+  }
+
+  static Future<bool> logout() async =>
+      await _prefs!.setBool(mpIsLoggedIn, false);
+
+  static Future<bool> userLogin(String adminid, String duration) async {
+    setDef(mpUserID, adminid);
+    setDef(mpUserLogInDuration, duration);
+    return await _prefs!.setBool(mpIsLoggedIn, true);
+  }
 }
 
 class MyNotif with ChangeNotifier {
@@ -199,4 +218,26 @@ class AdminNotificationModel {
   String? notifType, notifDesc, notifTime;
 
   AdminNotificationModel(this.notifType, this.notifDesc, this.notifTime);
+}
+
+class ElectionHistory {
+  String? voter, cand, election, date, pos, id;
+
+  ElectionHistory(
+      {this.voter = "University of Nigeria, Nsukka",
+      this.cand = "Medicine & Surgery Departmental Election",
+      this.election,
+      this.date,
+      this.pos,
+      this.id});
+
+  factory ElectionHistory.fromJSON(Map<String, dynamic> json) {
+    return ElectionHistory(
+      voter: json["voter"],
+      cand: json["cand"],
+      id: json["id"],
+      election: json["election"],
+      pos: json["pos"],
+    );
+  }
 }

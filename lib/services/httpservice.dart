@@ -1,82 +1,179 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:swiftvote/models/shortmodels.dart';
 
 class HttpService {
-  static const baseURL = "https://www.swiftvote.io";
+  static const baseURL = "swiftvote.io";
   static const urlCheckLink = "/upload-mutiple";
   static const urlAdminLogin = "/upload-mutiple";
 
   static const reqSuccess = "success";
   static const reqFailure = "failure";
 
-  Future<String> uploadPhoto(String path) async {
-    Uri uri = Uri.parse('http://10.0.0.103:5000/profile/upload-mutiple');
-    http.MultipartRequest request = http.MultipartRequest('POST', uri);
-    request.files.add(await http.MultipartFile.fromPath('files', path));
-
-    http.StreamedResponse response = await request.send();
-    final responseBytes = await response.stream.toBytes();
-    final responseString = utf8.decode(responseBytes);
-    //jsonDecode(responseString)
-    // print('\n\n');
-    // print('RESPONSE WITH HTTP');
-    // print(responseString);
-    // print('\n\n');
-    return responseString;
-  }
-
-  Future<bool> checkVoterLink(
+  //FLOW OF VOTER
+  Future<Election?> checkVoterLink(
       String electionURL, String electionPassword) async {
-    Uri uri = Uri.parse(urlCheckLink);
+    Uri uri = parseURI(urlCheckLink);
     final res = await http.post(uri, body: {
       "electionUrl": electionURL,
       "electionPassword": electionPassword
     });
-    final resJson = jsonDecode(res.body);
-    return resJson["status"] == reqSuccess;
+    if (res.statusCode == 200) {
+      final json = jsonDecode(res.body);
+      return Election.fromJSON(json);
+    }
+    return null;
+  }
+
+  Future<String?> checkVoterBio(Map<String, String> data) async {
+    Uri uri = parseURI(urlCheckLink);
+    final res = await http.post(uri, body: data);
+    if (res.statusCode == 200) {
+      final json = jsonDecode(res.body);
+      return json.id;
+    }
+    return null;
+  }
+
+  Future<bool> sendVoterCode(String email, String phone) async {
+    Uri uri = parseURI(urlCheckLink);
+    final res = await http.post(uri, body: {
+      "email": email,
+      "phone": phone,
+    });
+    if (res.statusCode == 200) {
+      //final json = jsonDecode(res.body);
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> confirmVoterCode(String id, String passcode) async {
+    Uri uri = parseURI(urlCheckLink);
+    final res = await http.post(uri, body: {
+      "id": id,
+      "code": passcode,
+    });
+    if (res.statusCode == 200) {
+      //final json = jsonDecode(res.body);
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> uploadPhoto(String id, String face, String idcard) async {
+    Uri uri = parseURI('http://10.0.0.103:5000/profile/upload-mutiple');
+    final request = http.MultipartRequest('POST', uri);
+    request.fields['id'] = id;
+    request.files.add(await http.MultipartFile.fromPath('face', face));
+    request.files.add(await http.MultipartFile.fromPath('card', idcard));
+
+    final res = await request.send();
+    if (res.statusCode == 200) {
+      return true;
+    }
+    return false;
   }
 
   Future<bool> adminLogin(String adminID, String adminPassword) async {
-    Uri uri = Uri.parse(urlAdminLogin);
+    Uri uri = parseURI(urlAdminLogin);
     final res = await http
         .post(uri, body: {"id": adminID, "adminPassword": adminPassword});
-    final resJson = jsonDecode(res.body);
-    return resJson["status"] == reqSuccess;
+    if (res.statusCode == 200) {
+      return await MyPrefs.adminLogin(adminID);
+    }
+    return false;
   }
 
-  Future<bool> adminGetElection(String adminId) async {
-    Uri uri = Uri.https(baseURL, urlCheckLink, {"id": adminId});
+//This gets all Election, Candidate, User, ElectionHistory
+  Future<List<T>?> httpGetAll<T>() async {
+    Uri uri = parseURI(_getLink<T>());
     final res = await http.get(uri);
-    //at backend, get recent election id
-    //then get Election
-    final resJson = jsonDecode(res.body);
-    return resJson["status"] == reqSuccess;
+    if (res.statusCode == 200) {
+      final resJson = jsonDecode(res.body);
+      return _listOf<T>(resJson);
+    }
+    return null;
+  }
+
+//This gets a single Election, Candidate, User, ElectionHistory
+  Future<T?> httpGet<T>(String id) async {
+    Uri uri = parseURI(_getLink<T>(), {"id": id});
+    final res = await http.get(uri);
+    if (res.statusCode == 200) {
+      final resJson = jsonDecode(res.body);
+      return _get<T>(resJson);
+    }
+    return null;
+  }
+
+  T _get<T>(dynamic m) {
+    switch (T) {
+      case Candidate:
+        return Candidate.fromJSON(m) as T;
+      case Election:
+        return Election.fromJSON(m) as T;
+      case ElectionHistory:
+        return ElectionHistory.fromJSON(m) as T;
+      default:
+        return User.fromJSON(m) as T;
+    }
+  }
+
+  String _getLink<T>() {
+    switch (T) {
+      case User:
+        return urlCheckLink;
+      case Candidate:
+        return urlCheckLink;
+      case Election:
+        return urlCheckLink;
+      case ElectionHistory:
+        return urlCheckLink;
+      default:
+        return urlCheckLink;
+    }
   }
 
   Future<String?> adminFPSendMail(String email) async {
-    Uri uri = Uri.parse(urlCheckLink);
+    Uri uri = parseURI(urlCheckLink);
     final res = await http.post(uri, body: {
       "email": email,
     });
-    final resJson = jsonDecode(res.body);
-    return resJson["id"];
+    if (res.statusCode == 200) {
+      final resJson = jsonDecode(res.body);
+      return resJson["id"];
+    }
+    return null;
   }
 
   Future<bool> adminFPVerify(String id, String passcode) async {
-    Uri uri =
-        Uri.https(baseURL, urlCheckLink, {"id": id, "passcode": passcode});
+    Uri uri = parseURI(urlCheckLink, {"id": id, "passcode": passcode});
     final res = await http.get(uri);
-    final resJson = jsonDecode(res.body);
-    return resJson["status"] == reqSuccess;
+    if (res.statusCode == 200) {
+      final resJson = jsonDecode(res.body);
+      return resJson["status"] == reqSuccess;
+    }
+    return false;
   }
 
   Future<bool> adminFPUpdate(String password, String adminId) async {
-    Uri uri = Uri.https(baseURL, urlCheckLink, {"id": adminId});
+    Uri uri = parseURI(urlCheckLink, {"id": adminId});
     final res = await http.patch(uri, body: {
       "password": password,
     });
-    final resJson = jsonDecode(res.body);
-    return resJson["status"] == reqSuccess;
+    if (res.statusCode == 200) {
+      final resJson = jsonDecode(res.body);
+      return resJson["status"] == reqSuccess;
+    }
+    return false;
   }
+
+  List<T> _listOf<T>(dynamic m) {
+    return (m as List<T>).map((e) => _get<T>(m)).toList();
+  }
+
+  Uri parseURI(String url, [Map<String, String>? rawData]) =>
+      parseURI(url, rawData);
 }
