@@ -8,6 +8,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'dart:async';
 
 import 'package:swiftvote/models/shortmodels.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 //enum
 enum SWV {
@@ -15,6 +16,15 @@ enum SWV {
   phone,
   text,
   password,
+  multi,
+}
+
+enum PollType {
+  choice,
+  hand,
+  star,
+  scale,
+  pref,
 }
 
 class SwiftVote {
@@ -24,6 +34,7 @@ class SwiftVote {
 
   //Splashscreen --- ss
   static const ssprogressFill = Color(0XFF407BFF);
+  static const ssprimaryborder = Color(0XFFB9D3F4);
   static const ssprogressDefault = Color(0XFFAAC4FF);
   static const sstextColor = Color(0XFF22272E);
   static const ssbuttonColor = Color(0XFFCBDBFF);
@@ -76,6 +87,334 @@ class SwiftVote {
     return defColor;
   }
 
+  static Widget getPollEditType(PollType pt) {
+    switch (pt) {
+      case PollType.choice:
+        return const SizedBox(
+          height: 8,
+        );
+      case PollType.hand:
+        return pollHand();
+      case PollType.star:
+        return pollStar();
+      case PollType.scale:
+        return pollScale();
+      case PollType.pref:
+        return pollPref();
+      default:
+        return const SizedBox(
+          height: 8,
+        );
+    }
+  }
+
+  static Widget getPollResultType(PollType pt,
+      {int? choice,
+      dynamic a,
+      Function(int, int)? defFunc,
+      bool shdOn = false,
+      double initRating = 5,
+      Function(double, int)? defFuncR}) {
+    switch (pt) {
+      case PollType.choice:
+        return const SizedBox(
+          height: 8,
+        );
+      case PollType.hand:
+        return pollHand(choice: choice, a: a, defFunc: defFunc, shdOn: shdOn);
+      case PollType.star:
+        return pollStar(
+            choice: choice,
+            initRating: initRating,
+            defFunc: defFuncR,
+            shdOn: shdOn);
+      case PollType.scale:
+        return pollScale(choice: choice, a: a, defFunc: defFunc, shdOn: shdOn);
+      case PollType.pref:
+        return pollPref(choice: choice, a: a, defFunc: defFunc, shdOn: shdOn);
+      default:
+        return const SizedBox(
+          height: 8,
+        );
+    }
+  }
+
+  static Widget pollChoice(String choiceString, int? choice,
+      {bool shdOn = false,
+      int initVotes = 0,
+      int totalVotes = 0,
+      Function(int, int)? defFunc}) {
+    bool isTap = false;
+    return StatefulBuilder(builder: (context, setState) {
+      return GestureDetector(
+        onTap: () {
+          if (shdOn) {
+            setState(() {
+              isTap = true;
+            });
+
+            defFunc!(initVotes, choice!);
+          }
+        },
+        child: Stack(
+          children: [
+            Container(
+                child: Center(child: Text(choiceString)),
+                width: double.maxFinite,
+                height: 40,
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: SwiftVote.ssprimaryborder),
+                )),
+            isTap
+                ? Positioned(
+                    left: 0,
+                    child: Container(
+                        child: Center(child: Text(choiceString)),
+                        width: double.maxFinite * (initVotes / totalVotes),
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: SwiftVote.ssprimaryborder,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: SwiftVote.ssprimaryborder),
+                        )),
+                  )
+                : const SizedBox(),
+            isTap
+                ? Positioned(
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    child: Text("${initVotes / totalVotes}%"),
+                  )
+                : const SizedBox(),
+          ],
+        ),
+      );
+    });
+  }
+
+  static Widget pollHand(
+      {int? choice,
+      List<int>? a,
+      Function(int, int)? defFunc,
+      bool shdOn = false}) {
+    int i = -1;
+    bool isTap = false;
+    return StatefulBuilder(
+        builder: ((context, setState) => Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    if (shdOn) {
+                      isTap = true;
+                      setState(() {
+                        i = 0;
+                      });
+                      defFunc!(choice!, 0);
+                    } else {}
+                  },
+                  child: pcov(
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/images/emojiup.svg",
+                            height: 24,
+                          ),
+                          Text(
+                            (isTap || shdOn)
+                                ? (isTap ? "  ${a![0]}" : "")
+                                : (a == null ? "" : "  ${a[0]}"),
+                            style: TextStyle(
+                                fontFamily: 'NotoSans',
+                                color: i == 0 ? Colors.white : null),
+                          )
+                        ],
+                      ),
+                      isSel: i == 0),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (shdOn) {
+                      isTap = true;
+                      setState(() {
+                        i = 1;
+                      });
+                      defFunc!(choice!, 1);
+                    }
+                  },
+                  child: pcov(
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/images/emojidown.svg",
+                            height: 24,
+                          ),
+                          Text(
+                            (isTap || shdOn)
+                                ? (isTap ? "  ${a![1]}" : "")
+                                : (a == null ? "" : "  ${a[1]}"),
+                            style: TextStyle(
+                                fontFamily: 'NotoSans',
+                                color: i == 1 ? Colors.white : null),
+                          )
+                        ],
+                      ),
+                      isSel: i == 1),
+                ),
+              ],
+            )));
+  }
+
+  static Widget pollStar(
+      {int? choice,
+      bool shdOn = false,
+      double initRating = 0,
+      Function(double, int)? defFunc}) {
+    return pcov(RatingBar.builder(
+      initialRating: initRating,
+      minRating: 1,
+      direction: Axis.horizontal,
+      allowHalfRating: true,
+      itemCount: 5,
+      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+      itemBuilder: (context, _) => Icon(
+        Icons.star,
+        color: Colors.amber,
+      ),
+      itemSize: 24,
+      unratedColor: Colors.amber.withOpacity(0.2),
+      onRatingUpdate: (rating) {
+        if (shdOn) {
+          defFunc!(rating, choice!);
+        }
+      },
+    ));
+  }
+
+  static Widget pollPref(
+      {int? choice,
+      List<int>? a,
+      Function(int, int)? defFunc,
+      bool shdOn = false}) {
+    int i = -1;
+    List<String> prefl = ["Agree", "Neutral", "Disagree"];
+    bool isTap = false;
+    return StatefulBuilder(builder: (context, setState) {
+      return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: List.generate(
+              3,
+              (index) => GestureDetector(
+                    onTap: () {
+                      if (shdOn) {
+                        isTap = true;
+                        setState(() {
+                          i = index;
+                        });
+                        defFunc!(index, choice!);
+                      }
+                    },
+                    child: pcov(
+                        Text(
+                          prefl[index] +
+                              ((isTap || shdOn)
+                                  ? (isTap ? "  ${a![index]}" : "")
+                                  : (a == null ? "" : "  ${a[index]}")),
+                          style: TextStyle(
+                              fontFamily: 'NotoSans',
+                              color: i == index ? Colors.white : null),
+                        ),
+                        isSel: i == index),
+                  )));
+    });
+  }
+
+  static Widget pollScale(
+      {int? choice,
+      List<int>? a,
+      Function(int, int)? defFunc,
+      bool shdOn = false}) {
+    int b = -1;
+    bool isTap = false;
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: StatefulBuilder(builder: (context, setState) {
+        return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+                10,
+                (i) => Tooltip(
+                      message: (isTap || shdOn)
+                          ? (isTap ? "${a![i]}" : "0")
+                          : (a == null ? "0" : "${a[i]}"),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (shdOn) {
+                            isTap = true;
+                            setState(() {
+                              b = i;
+                            });
+                            defFunc!(i, choice!);
+                          }
+                        },
+                        child: pcov(
+                            Text(
+                              "${i + 1}",
+                              style: TextStyle(
+                                  fontFamily: 'NotoSans',
+                                  color: i == b ? Colors.white : null),
+                            ),
+                            isSel: b == i),
+                      ),
+                    )));
+      }),
+    );
+  }
+
+  static Container pcov(Widget child, {bool isSel = false, double pad = 8}) {
+    return Container(
+        child: child,
+        margin: EdgeInsets.only(right: 8),
+        padding: EdgeInsets.all(pad),
+        decoration: BoxDecoration(
+          color: isSel ? SwiftVote.primaryColor : null,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(color: primaryColor),
+        ));
+  }
+
+  static Container pcovO(Widget child, {bool isSel = false}) {
+    return Container(
+        child: child,
+        width: double.maxFinite,
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: SwiftVote.ssprimaryborder),
+        ));
+  }
+
+  static Container pcovtab(Widget child) {
+    return Container(
+        child: child,
+        margin: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: primaryColor),
+        ));
+  }
+
   static AppBar defAppBar(String title,
       {bool hasBack = false,
       BuildContext? context,
@@ -117,6 +456,8 @@ class SwiftVote {
     String data, {
     Color bcolor = primaryColor,
     bool isWide = false,
+    bool isBorder = false,
+    bool porr = false,
     bool shdStay = false,
     Function? func,
   }) {
@@ -130,12 +471,20 @@ class SwiftVote {
               }
             }
           : () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context) => screen,
-                ),
-              );
+              porr
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => screen,
+                      ),
+                    )
+                  : Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => screen,
+                      ),
+                    );
+              ;
             },
       child: Text(
         data,
@@ -148,7 +497,12 @@ class SwiftVote {
             isWide ? const Size.fromHeight(24) : null),
         backgroundColor: MaterialStateProperty.all<Color>(bcolor),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+          RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+              side: isBorder
+                  ? const BorderSide(color: primaryColor)
+                  : BorderSide.none),
+        ),
         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
             const EdgeInsets.symmetric(vertical: 16, horizontal: 48)),
       ),
@@ -157,23 +511,31 @@ class SwiftVote {
 
   static Widget defTextFormField(
       String hint, double width, TextEditingController _controller,
-      {SWV varl = SWV.text}) {
+      {SWV varl = SWV.text, double fs = 13}) {
     return SizedBox(
       width: width - 32,
       child: TextFormField(
         controller: _controller,
-        keyboardType:
-            varl == SWV.phone ? TextInputType.phone : TextInputType.text,
-        style: const TextStyle(fontSize: 13, fontFamily: 'NotoSans'),
+        keyboardType: varl == SWV.phone
+            ? TextInputType.phone
+            : varl == SWV.multi
+                ? TextInputType.multiline
+                : TextInputType.text,
+        maxLines: varl == SWV.multi ? 5 : 1,
+        style: TextStyle(fontSize: fs, fontFamily: 'NotoSans'),
         validator: (value) => SWValidator(value).validate(varl),
+        obscureText: varl == SWV.password,
+        textAlignVertical: varl == SWV.multi ? TextAlignVertical.top : null,
         decoration: InputDecoration(
-            labelText: hint,
+            labelText: varl != SWV.multi ? hint : null,
             border: OutlineInputBorder(
               borderSide: const BorderSide(color: Color(0xFF7D848D)),
               borderRadius: BorderRadius.circular(8),
             ),
+            fillColor: Colors.white,
             isDense: true,
-            labelStyle: const TextStyle(fontSize: 13, fontFamily: 'NotoSans')),
+            hintText: varl == SWV.multi ? hint : null,
+            labelStyle: TextStyle(fontSize: fs, fontFamily: 'NotoSans')),
       ),
     );
   }
@@ -460,6 +822,33 @@ class SwiftVote {
           ),
         ),
       ),
+    );
+  }
+}
+
+class PollChooserResult extends StatefulWidget {
+  final PollType pt;
+  final dynamic m;
+  final bool isResult;
+  final int index;
+  const PollChooserResult(this.pt, this.m, this.isResult, this.index,
+      {Key? key})
+      : super(key: key);
+
+  @override
+  State<PollChooserResult> createState() => _PollChooserResultState();
+}
+
+class _PollChooserResultState extends State<PollChooserResult> {
+  @override
+  Widget build(BuildContext context) {
+    return SwiftVote.getPollResultType(
+      widget.pt,
+      choice: widget.index,
+      a: widget.m,
+      shdOn: widget.isResult,
+      defFunc: (a, b) {},
+      defFuncR: (a, b) {},
     );
   }
 }

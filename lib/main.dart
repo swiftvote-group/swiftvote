@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:swiftvote/models/shortmodels.dart';
 import 'package:swiftvote/registration/splashscreen/splashscreen.dart';
 import 'package:swiftvote/swiftvote.dart';
+import 'package:get/get.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,7 +59,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'SwiftVote',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

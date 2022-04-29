@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swiftvote/registration/voter/loading.dart';
+import 'package:swiftvote/registration/voter/signin.dart';
 import 'package:swiftvote/swiftvote.dart';
 
 class VoteLinkPage extends StatefulWidget {
@@ -57,8 +58,33 @@ class _VoteLinkPageState extends State<VoteLinkPage> {
                     Icons.vpn_key_outlined, "Password", w, conts[1],
                     isPass: true),
                 const SizedBox(
-                  height: 8,
+                  height: 16,
                 ),
+                SwiftVote.defButton(context, null, "Sign In With ID",
+                    bcolor: Colors.white,
+                    isBorder: true,
+                    porr: true,
+                    isWide: true,
+                    shdStay: true, func: () {
+                  bool isVal = SWValidator.validList(conts);
+                  if (!isVal) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => const SignInPage(),
+                      ),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => SignInPage(
+                            electionURL: conts[0].value.text,
+                            electionPass: conts[1].value.text),
+                      ),
+                    );
+                  }
+                }),
                 const SizedBox(
                   height: 16,
                 ),
@@ -90,7 +116,6 @@ class _VoteLinkPageState extends State<VoteLinkPage> {
                     ScaffoldMessenger.of(context).showSnackBar(errorBar);
                   }
                 }),
-                const Spacer(),
               ],
             ),
           ),

@@ -241,3 +241,51 @@ class ElectionHistory {
     );
   }
 }
+
+class PollChooserItem {
+  PollType pt;
+  List<String> choices;
+  Map<String, int> choiceMaps = {};
+  Map<String, List<int>> handMaps = {}; //[2]
+  Map<String, double> ratingMaps = {};
+  Map<String, List<int>> scaleMaps = {}; //[10]
+  Map<String, List<int>> prefMaps = {}; //[3]
+
+  PollChooserItem(
+    this.pt,
+    this.choices,
+  ) {
+    for (final element in choices) {
+      choiceMaps[element] = 0;
+      handMaps[element] = [0, 0];
+      ratingMaps[element] = 5;
+      scaleMaps[element] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      prefMaps[element] = [0, 0, 0];
+    }
+  }
+
+  Map<String, dynamic> getChooserItem() {
+    switch (pt) {
+      case PollType.choice:
+        return choiceMaps;
+      case PollType.hand:
+        return handMaps;
+      case PollType.star:
+        return ratingMaps;
+      case PollType.scale:
+        return scaleMaps;
+      case PollType.pref:
+        return prefMaps;
+
+      default:
+        return choiceMaps;
+    }
+  }
+}
+
+class Poll {
+  String title, desc;
+  PollChooserItem pci;
+
+  Poll(this.title, this.desc, this.pci);
+}
