@@ -1,14 +1,20 @@
 // This is a static class that contains constants and the likes.
 
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'dart:async';
 
 import 'package:swiftvote/models/shortmodels.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:swiftvote/registration/voter/chooseuser.dart';
+import 'package:swiftvote/registration/voter/votelink.dart';
 
 //enum
 enum SWV {
@@ -110,9 +116,11 @@ class SwiftVote {
 
   static Widget getPollResultType(PollType pt,
       {int? choice,
+      int? maxChoice,
       dynamic a,
       Function(int, int)? defFunc,
       bool shdOn = false,
+      bool ist = false,
       double initRating = 5,
       Function(double, int)? defFuncR}) {
     switch (pt) {
@@ -121,7 +129,13 @@ class SwiftVote {
           height: 8,
         );
       case PollType.hand:
-        return pollHand(choice: choice, a: a, defFunc: defFunc, shdOn: shdOn);
+        return pollHand(
+            choice: choice,
+            a: a,
+            defFunc: defFunc,
+            shdOn: shdOn,
+            ist: ist,
+            mc: maxChoice);
       case PollType.star:
         return pollStar(
             choice: choice,
@@ -129,9 +143,21 @@ class SwiftVote {
             defFunc: defFuncR,
             shdOn: shdOn);
       case PollType.scale:
-        return pollScale(choice: choice, a: a, defFunc: defFunc, shdOn: shdOn);
+        return pollScale(
+            choice: choice,
+            a: a,
+            defFunc: defFunc,
+            shdOn: shdOn,
+            ist: ist,
+            mc: maxChoice);
       case PollType.pref:
-        return pollPref(choice: choice, a: a, defFunc: defFunc, shdOn: shdOn);
+        return pollPref(
+            choice: choice,
+            a: a,
+            defFunc: defFunc,
+            shdOn: shdOn,
+            ist: ist,
+            mc: maxChoice);
       default:
         return const SizedBox(
           height: 8,
@@ -141,10 +167,11 @@ class SwiftVote {
 
   static Widget pollChoice(String choiceString, int? choice,
       {bool shdOn = false,
-      int initVotes = 0,
-      int totalVotes = 0,
+      int initVotes = 20,
+      int totalVotes = 100,
+      bool ist = false,
       Function(int, int)? defFunc}) {
-    bool isTap = false;
+    bool isTap = ist;
     return StatefulBuilder(builder: (context, setState) {
       return GestureDetector(
         onTap: () {
@@ -159,10 +186,8 @@ class SwiftVote {
         child: Stack(
           children: [
             Container(
-                child: Center(child: Text(choiceString)),
                 width: double.maxFinite,
                 height: 40,
-                padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
@@ -172,8 +197,10 @@ class SwiftVote {
                 ? Positioned(
                     left: 0,
                     child: Container(
-                        child: Center(child: Text(choiceString)),
-                        width: double.maxFinite * (initVotes / totalVotes),
+                        child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text("  $choiceString")),
+                        width: (Get.width - 32) * (initVotes / totalVotes),
                         height: 40,
                         decoration: BoxDecoration(
                           color: SwiftVote.ssprimaryborder,
@@ -183,11 +210,25 @@ class SwiftVote {
                   )
                 : const SizedBox(),
             isTap
+                ? const SizedBox()
+                : Container(
+                    child: Center(child: Text(choiceString)),
+                    width: double.maxFinite,
+                    height: 40,
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: SwiftVote.ssprimaryborder),
+                    )),
+            isTap
                 ? Positioned(
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    child: Text("${initVotes / totalVotes}%"),
+                    right: 4,
+                    top: 4,
+                    bottom: 4,
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: Text("${(initVotes * 100) / totalVotes}%")),
                   )
                 : const SizedBox(),
           ],
@@ -198,11 +239,13 @@ class SwiftVote {
 
   static Widget pollHand(
       {int? choice,
+      int? mc = -1,
       List<int>? a,
+      bool ist = false,
       Function(int, int)? defFunc,
       bool shdOn = false}) {
-    int i = -1;
-    bool isTap = false;
+    int i = mc!;
+    bool isTap = ist;
     return StatefulBuilder(
         builder: ((context, setState) => Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,6 +317,25 @@ class SwiftVote {
             )));
   }
 
+  static Widget regHeader(String title, String subtitle) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      const SizedBox(
+        height: 32,
+      ),
+      Text(
+        title,
+        style: TextStyle(fontSize: 16),
+      ),
+      const SizedBox(
+        height: 4,
+      ),
+      Text(subtitle, style: TextStyle(fontSize: 12, fontFamily: 'NotoSans')),
+      const SizedBox(
+        height: 32,
+      ),
+    ]);
+  }
+
   static Widget pollStar(
       {int? choice,
       bool shdOn = false,
@@ -303,11 +365,13 @@ class SwiftVote {
   static Widget pollPref(
       {int? choice,
       List<int>? a,
+      int? mc = -1,
+      bool ist = false,
       Function(int, int)? defFunc,
       bool shdOn = false}) {
-    int i = -1;
+    int i = mc!;
     List<String> prefl = ["Agree", "Neutral", "Disagree"];
-    bool isTap = false;
+    bool isTap = ist;
     return StatefulBuilder(builder: (context, setState) {
       return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,11 +404,13 @@ class SwiftVote {
 
   static Widget pollScale(
       {int? choice,
+      int? mc = -1,
       List<int>? a,
+      bool ist = false,
       Function(int, int)? defFunc,
       bool shdOn = false}) {
-    int b = -1;
-    bool isTap = false;
+    int b = mc!;
+    bool isTap = ist;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: StatefulBuilder(builder: (context, setState) {
@@ -621,6 +687,19 @@ class SwiftVote {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)));
   }
 
+  static SnackBar infoBar(String msg) {
+    return SnackBar(
+        content: Text(
+          msg,
+          style: TextStyle(fontFamily: 'SansSerifBldFLF'),
+        ),
+        duration: Duration(seconds: 2),
+        backgroundColor: Colors.black38,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(8),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)));
+  }
+
   static Widget candListTile(BuildContext ctx,
       {String name = "Chijiofor Ebube",
       double percent = 67,
@@ -829,9 +908,11 @@ class SwiftVote {
 class PollChooserResult extends StatefulWidget {
   final PollType pt;
   final dynamic m;
-  final bool isResult;
+  final bool isResult, isPressed;
   final int index;
-  const PollChooserResult(this.pt, this.m, this.isResult, this.index,
+  final int maxes;
+  const PollChooserResult(
+      this.pt, this.m, this.isResult, this.index, this.isPressed, this.maxes,
       {Key? key})
       : super(key: key);
 
@@ -846,7 +927,9 @@ class _PollChooserResultState extends State<PollChooserResult> {
       widget.pt,
       choice: widget.index,
       a: widget.m,
-      shdOn: widget.isResult,
+      shdOn: !widget.isResult,
+      ist: widget.isPressed,
+      maxChoice: widget.maxes,
       defFunc: (a, b) {},
       defFuncR: (a, b) {},
     );
@@ -1202,5 +1285,106 @@ class SWValidator {
       return null;
     }
     return "Invalid Password";
+  }
+}
+
+class SignInUpLink extends StatelessWidget {
+  const SignInUpLink({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SwiftVote.defButton(context, const VoteLinkPage(), "Join an election",
+              isWide: true),
+          const SizedBox(
+            height: 36,
+          ),
+          Row(
+            children: [
+              GestureDetector(
+                  onTap: () {
+                    Get.to(ChooseUserPage(true));
+                  },
+                  child: Text("Sign Up")),
+              const Spacer(),
+              GestureDetector(
+                  onTap: () {
+                    Get.to(ChooseUserPage(false));
+                  },
+                  child: Text("Sign In"))
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class UserPicContainer extends StatefulWidget {
+  final FormController fc;
+  const UserPicContainer(this.fc, {Key? key}) : super(key: key);
+
+  @override
+  State<UserPicContainer> createState() => _UserPicContainerState();
+}
+
+class _UserPicContainerState extends State<UserPicContainer> {
+  final ImagePicker _picker = ImagePicker();
+  XFile? galleryImage;
+  File? finalImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        try {
+          galleryImage = await _picker.pickImage(source: ImageSource.gallery);
+          File? file = await ImageCropper().cropImage(
+            sourcePath: galleryImage!.path,
+            aspectRatio: CropAspectRatio(ratioX: 144, ratioY: 144),
+            cropStyle: CropStyle.circle,
+            compressQuality: 100,
+            maxHeight: 144,
+            maxWidth: 144,
+            compressFormat: ImageCompressFormat.jpg,
+            iosUiSettings: const IOSUiSettings(
+              title: "Adjust Size",
+            ),
+            androidUiSettings: const AndroidUiSettings(
+              toolbarColor: Colors.white,
+              toolbarTitle: "Adjust Size",
+            ),
+          );
+          setState(() {
+            widget.fc.userPic = file!.path;
+            finalImage = file;
+          });
+        } catch (e) {
+          print(e);
+        }
+      },
+      child: Container(
+        width: 67,
+        height: 67,
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          image: DecorationImage(
+              image: AssetImage("assets/images/defuserpic.png"),
+              fit: BoxFit.cover),
+        ),
+        child: finalImage == null
+            ? SizedBox()
+            : Image.file(
+                finalImage!,
+                height: 48,
+                width: 48,
+              ),
+      ),
+    );
   }
 }

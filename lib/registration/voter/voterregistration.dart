@@ -32,7 +32,7 @@ class _VoterRegistrationPageState extends State<VoterRegistrationPage> {
   void initState() {
     controllers = List.generate(12, (index) => TextEditingController());
     screens = [
-      VoterRegScreen(controllers.sublist(0, 6)),
+      VoterRegScreen(FormController(controllers.sublist(0, 6))),
       VoterNextScreen(controllers.sublist(6, 8)),
       VerificationScreen(controllers.sublist(8), key: verifkey),
       VoterUploadScreen(true, userImages),

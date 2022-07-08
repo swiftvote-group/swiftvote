@@ -5,7 +5,9 @@ import 'package:swiftvote/swiftvote.dart';
 class PollResult extends StatefulWidget {
   final String title, num, extra, desc;
   final PollChooserItem pci;
-  const PollResult(this.title, this.num, this.extra, this.desc, this.pci,
+  final bool isResult;
+  const PollResult(
+      this.title, this.num, this.extra, this.desc, this.pci, this.isResult,
       {Key? key})
       : super(key: key);
 
@@ -16,6 +18,7 @@ class PollResult extends StatefulWidget {
 class _PollResultState extends State<PollResult> {
   late String title, num, extra, desc;
   late PollChooserItem pci;
+  late bool isRes;
 
   @override
   void initState() {
@@ -24,6 +27,7 @@ class _PollResultState extends State<PollResult> {
     extra = widget.extra;
     desc = widget.desc;
     pci = widget.pci;
+    isRes = widget.isResult;
     super.initState();
   }
 
@@ -31,7 +35,10 @@ class _PollResultState extends State<PollResult> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        children: [PollHeader(title, num, extra, desc), PollChooser(pci, true)],
+        children: [
+          PollHeader(title, num, extra, desc),
+          PollChooser(pci, isRes)
+        ],
       ),
     );
   }
@@ -80,6 +87,15 @@ class PollChooser extends StatefulWidget {
 }
 
 class _PollChooserState extends State<PollChooser> {
+  int curChoice = 0;
+  bool isPressed = false;
+
+  @override
+  void initState() {
+    isPressed = widget.isAdmin;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -95,7 +111,16 @@ class _PollChooserState extends State<PollChooser> {
               height: 6,
             ),
             pt == PollType.choice
-                ? SwiftVote.pollChoice(s, index)
+                ? SwiftVote.pollChoice(s, index,
+                    shdOn: !widget.isAdmin,
+                    ist: isPressed,
+                    initVotes: widget.pci.choiceMaps[s]!,
+                    totalVotes: widget.pci.tchoices, defFunc: (a, b) {
+                    setState(() {
+                      curChoice = b;
+                      isPressed = true;
+                    });
+                  })
                 : SwiftVote.pcovO(SizedBox(
                     width: double.maxFinite,
                     height: 40,
@@ -105,7 +130,8 @@ class _PollChooserState extends State<PollChooser> {
             ),
             Align(
                 alignment: Alignment.centerLeft,
-                child: PollChooserResult(pt, m, true, index)),
+                child: PollChooserResult(pt, m, true, index, isPressed,
+                    widget.pci.getChooserMax()[index])),
             const SizedBox(
               height: 12,
             ),

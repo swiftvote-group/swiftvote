@@ -82,6 +82,34 @@ class _SplashScreenState extends State<SplashScreen>
               ],
             ),
           ),
+          // Padding(
+          //   padding: const EdgeInsets.only(right: 16),
+          //   child: Align(
+          //     alignment: Alignment.centerRight,
+          //     child: TextButton(
+          //       onPressed: () {
+          //         setState(() {
+          //           curState = 3;
+          //           _controller.value = 6.01;
+          //         });
+          //       },
+          //       child: const Text(
+          //         "Skip",
+          //         style: TextStyle(
+          //             color: SwiftVote.textColor, fontFamily: 'NotoSans'),
+          //       ),
+          //       style: ButtonStyle(
+          //         backgroundColor: MaterialStateProperty.all<Color>(
+          //             SwiftVote.ssprogressDefault),
+          //         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          //             RoundedRectangleBorder(
+          //                 borderRadius: BorderRadius.circular(16))),
+          //         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+          //             const EdgeInsets.symmetric(vertical: 4, horizontal: 20)),
+          //       ),
+          //     ),
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.all(32.0),
             child: Text(
@@ -91,52 +119,66 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
           ),
-          Expanded(
-            child: curState == 3
-                ? const LastSplashScreen()
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/images/sspage$curState.svg",
-                        width: MediaQuery.of(context).size.width,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {
-                              setState(() {
-                                curState = 3;
-                                _controller.value = 6.01;
-                              });
-                            },
-                            child: const Text(
-                              "Skip",
-                              style: TextStyle(
-                                  color: SwiftVote.textColor,
-                                  fontFamily: 'NotoSans'),
-                            ),
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  SwiftVote.ssprogressDefault),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16))),
-                              padding:
-                                  MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                      const EdgeInsets.symmetric(
-                                          vertical: 4, horizontal: 20)),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SvgPicture.asset("assets/images/fulllogo.svg"),
-                    ],
-                  ),
+          Image.asset(
+            "assets/images/sspage$curState.png",
+            width: MediaQuery.of(context).size.width,
+            height: 248,
           ),
+          Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: SignInUpLink(),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SvgPicture.asset("assets/images/fulllogo.svg"),
+          ),
+          // Expanded(
+          //   child: curState == 3
+          //       ? const LastSplashScreen()
+          //       : Column(
+          //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //           children: [
+          //             Image.asset(
+          //               "assets/images/sspage$curState.png",
+          //               width: MediaQuery.of(context).size.width,
+          //             ),
+          //             Padding(
+          //               padding: const EdgeInsets.only(right: 16),
+          //               child: Align(
+          //                 alignment: Alignment.centerRight,
+          //                 child: TextButton(
+          //                   onPressed: () {
+          //                     setState(() {
+          //                       curState = 3;
+          //                       _controller.value = 6.01;
+          //                     });
+          //                   },
+          //                   child: const Text(
+          //                     "Skip",
+          //                     style: TextStyle(
+          //                         color: SwiftVote.textColor,
+          //                         fontFamily: 'NotoSans'),
+          //                   ),
+          //                   style: ButtonStyle(
+          //                     backgroundColor: MaterialStateProperty.all<Color>(
+          //                         SwiftVote.ssprogressDefault),
+          //                     shape: MaterialStateProperty.all<
+          //                             RoundedRectangleBorder>(
+          //                         RoundedRectangleBorder(
+          //                             borderRadius: BorderRadius.circular(16))),
+          //                     padding:
+          //                         MaterialStateProperty.all<EdgeInsetsGeometry>(
+          //                             const EdgeInsets.symmetric(
+          //                                 vertical: 4, horizontal: 20)),
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //             SvgPicture.asset("assets/images/fulllogo.svg"),
+          //           ],
+          //         ),
+          // ),
         ],
       )),
     );

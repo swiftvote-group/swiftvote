@@ -54,7 +54,8 @@ class _PollPreviewPageState extends State<PollPreviewPage> {
                     PollChooserItem(PollType.values[Random().nextInt(5)], [
                       "Option 1",
                       "Option 2",
-                    ])),
+                    ]),
+                    false),
               ),
             ),
           ),

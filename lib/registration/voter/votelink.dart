@@ -60,6 +60,37 @@ class _VoteLinkPageState extends State<VoteLinkPage> {
                 const SizedBox(
                   height: 16,
                 ),
+                SwiftVote.defButton(context, null, "Enter",
+                    isWide: true, shdStay: true, func: () {
+                  bool isVal = SWValidator.validList(conts);
+                  if (isVal) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => const LoadingPage(),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(errorBar);
+                  }
+                }),
+                const SizedBox(
+                  height: 16,
+                ),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 16.0),
+                    child: Text("Report Issue",
+                        style: TextStyle(
+                          fontFamily: 'NotoSans',
+                          color: SwiftVote.primaryColor,
+                          decoration: TextDecoration.underline,
+                          fontSize: 12,
+                        )),
+                  ),
+                ),
+                const Spacer(),
                 SwiftVote.defButton(context, null, "Sign In With ID",
                     bcolor: Colors.white,
                     isBorder: true,
@@ -83,37 +114,6 @@ class _VoteLinkPageState extends State<VoteLinkPage> {
                             electionPass: conts[1].value.text),
                       ),
                     );
-                  }
-                }),
-                const SizedBox(
-                  height: 16,
-                ),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16.0),
-                    child: Text("Report Issue",
-                        style: TextStyle(
-                          fontFamily: 'NotoSans',
-                          color: SwiftVote.primaryColor,
-                          decoration: TextDecoration.underline,
-                          fontSize: 12,
-                        )),
-                  ),
-                ),
-                const Spacer(),
-                SwiftVote.defButton(context, null, "Enter",
-                    isWide: true, shdStay: true, func: () {
-                  bool isVal = SWValidator.validList(conts);
-                  if (isVal) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) => const LoadingPage(),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(errorBar);
                   }
                 }),
               ],

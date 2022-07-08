@@ -49,6 +49,7 @@ dependencies:
   flutter_platform_widgets: ^1.20.0
   flutter_rating_bar: ^4.0.0
   get: ^4.6.1
+  connectivity_plus: ^2.3.0
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:swiftvote/models/shortmodels.dart';
 import 'package:swiftvote/registration/admin/adminreg.dart';
 import 'package:swiftvote/registration/splashscreen/splashscreen.dart';
 import 'package:swiftvote/swiftvote.dart';
@@ -154,13 +156,10 @@ class _CenterLogOutState extends State<CenterLogOut> {
             const Spacer(),
             TextButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => const SplashScreen(
-                      cstate: 3,
-                    ),
-                  ),
-                );
+                MyPrefs.logout();
+                Get.offAll(const SplashScreen(
+                  cstate: 3,
+                ));
               },
               child: const Text(
                 "Thanks!",

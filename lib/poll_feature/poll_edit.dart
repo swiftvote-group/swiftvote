@@ -147,10 +147,11 @@ class _PollEditPageState extends State<PollEditPage>
                 : PollResult(
                     pa[0].value.text,
                     "200",
-                    "-",
+                    "5 days left",
                     pa[1].value.text,
                     PollChooserItem(PollType.values[curPollType],
-                        pollOptions.map((e) => e.value.text).toList())),
+                        pollOptions.map((e) => e.value.text).toList()),
+                    true),
             const SizedBox(
               height: 8,
             ),

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -128,6 +129,8 @@ class MyPrefs {
   static Future<bool> logout() async =>
       await _prefs!.setBool(mpIsLoggedIn, false);
 
+  static bool isLoggedIn() => _prefs!.getBool(mpIsLoggedIn) ?? false;
+
   static Future<bool> userLogin(String adminid, String duration) async {
     setDef(mpUserID, adminid);
     setDef(mpUserLogInDuration, duration);
@@ -250,18 +253,45 @@ class PollChooserItem {
   Map<String, double> ratingMaps = {};
   Map<String, List<int>> scaleMaps = {}; //[10]
   Map<String, List<int>> prefMaps = {}; //[3]
+  int tchoices = 0; //totalvotes
+  List<int> handMax = [];
+  List<int> scaleMax = [];
+  List<int> prefMax = [];
 
   PollChooserItem(
     this.pt,
     this.choices,
   ) {
     for (final element in choices) {
-      choiceMaps[element] = 0;
-      handMaps[element] = [0, 0];
-      ratingMaps[element] = 5;
-      scaleMaps[element] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-      prefMaps[element] = [0, 0, 0];
+      final b = _randNum();
+      choiceMaps[element] = b;
+      tchoices += b;
+      handMaps[element] = _randList(2);
+      handMax.add(getMax(handMaps[element]!));
+      ratingMaps[element] = 0;
+      scaleMaps[element] = _randList(10);
+      scaleMax.add(getMax(scaleMaps[element]!));
+      prefMaps[element] = _randList(3);
+      prefMax.add(getMax(prefMaps[element]!));
     }
+  }
+
+  int getMax(List<int> b) {
+    int a = 0;
+    for (int i = 0; i < b.length; i++) {
+      if (b[i] > a) {
+        a = i;
+      }
+    }
+    return a;
+  }
+
+  int _randNum({int max = 100}) {
+    return Random().nextInt(max);
+  }
+
+  List<int> _randList(int cnt) {
+    return List.generate(cnt, (i) => _randNum());
   }
 
   Map<String, dynamic> getChooserItem() {
@@ -281,6 +311,20 @@ class PollChooserItem {
         return choiceMaps;
     }
   }
+
+  List<int> getChooserMax() {
+    switch (pt) {
+      case PollType.hand:
+        return handMax;
+      case PollType.scale:
+        return scaleMax;
+      case PollType.pref:
+        return prefMax;
+
+      default:
+        return handMax;
+    }
+  }
 }
 
 class Poll {
@@ -288,4 +332,10 @@ class Poll {
   PollChooserItem pci;
 
   Poll(this.title, this.desc, this.pci);
+}
+
+class FormController {
+  String? userPic;
+  List<TextEditingController> conts = [];
+  FormController(this.conts, {this.userPic});
 }
